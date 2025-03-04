@@ -41,13 +41,11 @@ composer install
 ```
 Go to phpmyadmin and create an empty database named 'eidb'.
 
-After that, run the following command to migrate database which automatically creates tables inside the eidb database.
+After that, run the following command to migrate database which automatically creates tables inside the eidb database and create a dev environment.
 
 ```bash
 php artisan migrate
-```
-
-```bash
+npm install && npm run build
 composer run dev
 ```
 
