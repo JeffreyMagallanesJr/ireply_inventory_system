@@ -48,7 +48,7 @@ export default function Register() {
                             required
                             autoFocus
                             tabIndex={1}
-                            autoComplete="first_name"
+                            autoComplete="given-name"
                             value={data.first_name}
                             onChange={(e) => setData('first_name', e.target.value)}
                             disabled={processing}
@@ -65,7 +65,7 @@ export default function Register() {
                             required
                             autoFocus
                             tabIndex={2}
-                            autoComplete="last_name"
+                            autoComplete="family-name"
                             value={data.last_name}
                             onChange={(e) => setData('last_name', e.target.value)}
                             disabled={processing}
@@ -82,7 +82,7 @@ export default function Register() {
                             required
                             autoFocus
                             tabIndex={3}
-                            autoComplete="name"
+                            autoComplete="username"
                             value={data.username}
                             onChange={(e) => setData('username', e.target.value)}
                             disabled={processing}
