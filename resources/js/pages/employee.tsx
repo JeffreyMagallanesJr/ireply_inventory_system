@@ -14,7 +14,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 interface Employee {
-    employee_id: string;
+    id_number: string;
     first_name: string;
     middle_name?: string;
     last_name: string;
@@ -24,7 +24,7 @@ interface Employee {
 
 export default function Employee({ employees }: { employees: Employee[] }) {
     const [searchTerm, setSearchTerm] = useState('');
-    const [sortColumn, setSortColumn] = useState<'employee_id' | 'last_name' | 'department' | 'position'>('employee_id');
+    const [sortColumn, setSortColumn] = useState<'id_number' | 'last_name' | 'department' | 'position'>('id_number');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     const sortedEmployees = [...employees]
@@ -40,7 +40,7 @@ export default function Employee({ employees }: { employees: Employee[] }) {
             return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
         });
 
-    const toggleSort = (column: 'employee_id' | 'last_name' | 'department' | 'position') => {
+    const toggleSort = (column: 'id_number' | 'last_name' | 'department' | 'position') => {
         if (sortColumn === column) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
         } else {
@@ -70,7 +70,7 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                         <thead>
                             <tr className="bg-gray-100 dark:bg-gray-800">
                                 {[
-                                    { key: 'employee_id', label: 'Employee ID' },
+                                    { key: 'id_number', label: 'Employee ID' },
                                     { key: 'last_name', label: 'Name' },
                                     { key: 'department', label: 'Department' },
                                     { key: 'position', label: 'Position' },
@@ -78,7 +78,7 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                                     <th
                                         key={key}
                                         className="border border-gray-300 dark:border-gray-700 p-2 cursor-pointer text-center"
-                                        onClick={() => toggleSort(key as 'employee_id' | 'last_name' | 'department' | 'position')}
+                                        onClick={() => toggleSort(key as 'id_number' | 'last_name' | 'department' | 'position')}
                                     >
                                         <div className="flex items-center justify-center gap-1">
                                             {label}
@@ -93,8 +93,8 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                         <tbody>
                             {sortedEmployees.length > 0 ? (
                                 sortedEmployees.map((employee) => (
-                                    <tr key={employee.employee_id} className="border border-gray-300 dark:border-gray-700">
-                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{employee.employee_id}</td>
+                                    <tr key={employee.id_number} className="border border-gray-300 dark:border-gray-700">
+                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{employee.id_number}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
                                             {employee.last_name}, {employee.first_name} {employee.middle_name || ''}
                                         </td>
@@ -102,12 +102,12 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{employee.position}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
                                             <Link
-                                                href={`/employee/employee-view/${employee.employee_id}`}
+                                                href={`/employee/employee-view/${employee.id_number}`}
                                                 className="px-2 py-1 text-blue-500 hover:underline"
                                             >
                                                 View
                                             </Link>
-                                            <Link href={`/employee/employee-edit/${employee.employee_id}`} className="ml-2 px-2 py-1 text-green-500 hover:underline">
+                                            <Link href={`/employee/employee-edit/${employee.id_number}`} className="ml-2 px-2 py-1 text-green-500 hover:underline">
                                                 Edit
                                             </Link>
 
