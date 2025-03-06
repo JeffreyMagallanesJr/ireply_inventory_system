@@ -112,6 +112,7 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                                             </Link>
 
                                             <button className="ml-2 px-2 py-1 text-red-500 hover:underline">Delete</button>
+
                                         </td>
                                     </tr>
                                 ))

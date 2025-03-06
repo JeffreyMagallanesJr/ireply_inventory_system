@@ -77,6 +77,22 @@ class EmployeeController extends Controller
         return inertia('employee/employee-edit', ['employee' => $employee]);
     }
 
+    public function destroy($id)
+    {
+        // Find the employee by ID number
+        $employee = Employee::where('id_number', $id)->first();
+
+        if (!$employee) {
+            return response()->json(['message' => 'Employee not found'], 404);
+        }
+
+        // Delete the employee
+        $employee->delete();
+
+        return redirect()->route('employee.index')->with('success', 'Employee deleted successfully');
+    }
+
+
     public function update(Request $request, $id)
     {
         // Validate request
