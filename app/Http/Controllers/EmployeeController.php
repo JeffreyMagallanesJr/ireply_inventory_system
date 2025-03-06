@@ -66,5 +66,42 @@ class EmployeeController extends Controller
         ]);
     }
 
+    public function edit($id)
+    {
+        $employee = Employee::where('employee_id', $id)->first();
+
+        if (!$employee) {
+            abort(404, 'Employee not found');
+        }
+
+        return inertia('employee/employee-edit', ['employee' => $employee]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validate request
+        $validated = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'department' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+        ]);
+
+        // Find employee by ID
+        $employee = Employee::where('employee_id', $id)->first();
+        if (!$employee) {
+            return response()->json(['message' => 'Employee not found'], 404);
+        }
+
+        // Update employee
+        $employee->update($validated);
+
+        // Redirect back with success message
+        return redirect()->route('employee.index')->with('success', 'Employee updated successfully');
+    }
+
+
+
 
 }

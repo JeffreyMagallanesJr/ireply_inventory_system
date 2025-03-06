@@ -42,12 +42,13 @@ export default function EmployeeView() {
                     <p><strong>Department:</strong> {employee.department}</p>
                     <p><strong>Position:</strong> {employee.position}</p>
                     <p><strong>Date Hired:</strong> {employee.date_hired}</p>
-                    <p><strong>Created At:</strong> {employee.created_at}</p>
-                    <p><strong>Updated At:</strong> {employee.updated_at}</p>
+                    <p><strong>Created At:</strong> {new Date(employee.created_at).toLocaleString()}</p>
+                    <p><strong>Updated At:</strong> {new Date(employee.updated_at).toLocaleString()}</p>
+
                 </div>
                 <div className="mt-4">
                     <Link href="/employee" className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Back</Link>
-                    <Link href={`/employee/edit/${employee.employee_id}`} className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Edit</Link>
+                    <Link href={`/employee/employee-edit/${employee.employee_id}`} className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Edit</Link>
                 </div>
             </div>
         </AppLayout>
