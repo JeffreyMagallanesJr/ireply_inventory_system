@@ -4,14 +4,24 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Monitor, UserCircle, } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        url: '/dashboard',
+        url: '/ireply_inventory/public/dashboard',
         icon: LayoutGrid,
+    },
+    {
+        title: 'Employee',
+        url: '/ireply_inventory/public/employee',
+        icon: UserCircle,
+    },
+    {
+        title: 'Equipment',
+        url: '/ireply_inventory/public/equipment',
+        icon: Monitor,
     },
 ];
 
