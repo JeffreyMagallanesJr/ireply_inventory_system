@@ -13,6 +13,7 @@ interface Employee {
     first_name: string;
     middle_name?: string;
     last_name: string;
+    email: string;
     department: string;
     position: string;
 }
@@ -26,6 +27,7 @@ export default function EmployeeEdit() {
         first_name: employee.first_name,
         middle_name: employee.middle_name || '',
         last_name: employee.last_name,
+        email: employee.email,
         department: employee.department,
         position: employee.position,
     });
@@ -71,6 +73,17 @@ export default function EmployeeEdit() {
                             className="w-full px-3 py-2 border rounded"
                         />
                         {errors.last_name && <p className="text-red-500">{errors.last_name}</p>}
+                    </div>
+
+                    <div>
+                        <label className="block font-medium">Email</label>
+                        <input
+                            type="text"
+                            value={data.email}
+                            onChange={(e) => setData('email', e.target.value)}
+                            className="w-full px-3 py-2 border rounded"
+                        />
+                        {errors.email && <p className="text-red-500">{errors.email}</p>}
                     </div>
 
                     <div>
