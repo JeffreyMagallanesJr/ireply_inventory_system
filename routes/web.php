@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::put('/employee/update/{id}', [EmployeeController::class, 'update'])->name('employee.update');
 
+    Route::delete('/employee/delete/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
+
 
 });
 
