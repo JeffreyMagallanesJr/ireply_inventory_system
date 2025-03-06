@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id('transaction_id');
+            $table->id('id');
             $table->foreignId('user_id')->unique();
             $table->foreignId('employee_id');
             $table->foreignId('equipment_id')->unique();
@@ -23,9 +23,9 @@ return new class extends Migration
             $table->enum('return_state',['good_condition', 'brand_new', 'damaged']);
             $table->date('return_date');
 
-            $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('employee_id')->references('employee_id')->on('employees');
-            $table->foreign('equipment_id')->references('equipment_id')->on('equipments');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('equipment_id')->references('id')->on('equipments');
         });
     }
 
