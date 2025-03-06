@@ -30,6 +30,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/employee/employee-view/{id}', [EmployeeController::class, 'show']);
 
     Route::get('/employee/employee-edit/{id}', [EmployeeController::class, 'edit']);
+    
+    Route::delete('/employee/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
     Route::put('/employee/update/{id}', [EmployeeController::class, 'update'])->name('employee.update');
 
