@@ -19,11 +19,20 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+interface ProfileForm {
+    first_name: string;
+    middle_name?: string; // Optional
+    last_name: string;
+    email: string;
+}
+
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
-        name: auth.user.name,
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
+        first_name: auth.user.first_name,
+        middle_name: auth.user.middle_name || '', // Ensure optional value
+        last_name: auth.user.last_name,
         email: auth.user.email,
     });
 
@@ -44,39 +53,62 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                     <HeadingSmall title="Profile information" description="Update your name and email address" />
 
                     <form onSubmit={submit} className="space-y-6">
+                        {/* First Name */}
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
-
+                            <Label htmlFor="first_name">First Name</Label>
                             <Input
-                                id="name"
-                                className="mt-1 block w-full"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
+                                id="first_name"
+                                value={data.first_name}
+                                onChange={(e) => setData('first_name', e.target.value)}
                                 required
-                                autoComplete="name"
-                                placeholder="Full name"
+                                autoComplete="given-name"
+                                placeholder="First Name"
                             />
-
-                            <InputError className="mt-2" message={errors.name} />
+                            <InputError className="mt-2" message={errors.first_name} />
                         </div>
 
+                        {/* Middle Name (Optional) */}
+                        <div className="grid gap-2">
+                            <Label htmlFor="middle_name">Middle Name (Optional)</Label>
+                            <Input
+                                id="middle_name"
+                                value={data.middle_name}
+                                onChange={(e) => setData('middle_name', e.target.value)}
+                                autoComplete="additional-name"
+                                placeholder="Middle Name"
+                            />
+                        </div>
+
+                        {/* Last Name */}
+                        <div className="grid gap-2">
+                            <Label htmlFor="last_name">Last Name</Label>
+                            <Input
+                                id="last_name"
+                                value={data.last_name}
+                                onChange={(e) => setData('last_name', e.target.value)}
+                                required
+                                autoComplete="family-name"
+                                placeholder="Last Name"
+                            />
+                            <InputError className="mt-2" message={errors.last_name} />
+                        </div>
+
+                        {/* Email Address */}
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email address</Label>
-
                             <Input
                                 id="email"
                                 type="email"
-                                className="mt-1 block w-full"
                                 value={data.email}
                                 onChange={(e) => setData('email', e.target.value)}
                                 required
                                 autoComplete="username"
                                 placeholder="Email address"
                             />
-
                             <InputError className="mt-2" message={errors.email} />
                         </div>
 
+                        {/* Email Verification Notice */}
                         {mustVerifyEmail && auth.user.email_verified_at === null && (
                             <div>
                                 <p className="text-muted-foreground -mt-4 text-sm">
@@ -99,6 +131,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             </div>
                         )}
 
+                        {/* Save Button */}
                         <div className="flex items-center gap-4">
                             <Button disabled={processing}>Save</Button>
 
