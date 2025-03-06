@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('auth/login'); // Changed to match the correct path
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -14,16 +14,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('employee', function () {
-        return Inertia::render('employee');
-    })->name('employee');
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('equipment', function () {
-        return Inertia::render('equipment');
-    })->name('equipment');
-});
+        Route::get('employee', function () {
+            return Inertia::render('employee');
+        })->name('employee');
+    });
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
