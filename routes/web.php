@@ -5,7 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\EmployeeController;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return Inertia::render('auth/login');
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
