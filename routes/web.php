@@ -14,10 +14,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('employee', function () {
-        return Inertia::render('employee');
-    })->name('employee');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('dashboard', [
+            'user' => Auth::user(), // 👈 Pass the authenticated user
+        ]);
+    })->name('dashboard');
+
+    Route::get('/employee', [EmployeeController::class, 'index'])->name('employee');
+
+    Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
+    Route::get('/employee/employee-form', [EmployeeController::class, 'create'])->name('employee.create');
+    Route::post('/employee', [EmployeeController::class, 'store'])->name('employee.store');
+
+    Route::get('/employee/employee-view/{id}', [EmployeeController::class, 'show']);
+
+    Route::get('/employee/employee-edit/{id}', [EmployeeController::class, 'edit']);
+
+    Route::put('/employee/update/{id}', [EmployeeController::class, 'update'])->name('employee.update');
+
+
 });
 
 Route::middleware(['auth'])->group(function () {
