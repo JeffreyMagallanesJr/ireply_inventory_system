@@ -46,6 +46,7 @@ After that, run the following command to migrate database which automatically cr
 ```bash
 php artisan migrate
 npm install && npm run build
+npm install date-fns --save
 composer run dev
 ```
 

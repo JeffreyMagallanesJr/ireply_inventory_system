@@ -10,17 +10,17 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        url: '/ireply_inventory/public/dashboard',
+        url: '/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'Employee',
-        url: '/ireply_inventory/public/employee',
+        url: '/employee',
         icon: UserCircle,
     },
     {
         title: 'Equipment',
-        url: '/ireply_inventory/public/equipment',
+        url: '/equipment',
         icon: Monitor,
     },
 ];
