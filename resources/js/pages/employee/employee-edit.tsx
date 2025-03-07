@@ -3,15 +3,15 @@ import AppLayout from '@/layouts/app-layout';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { BreadcrumbItem, PageProps } from '@/types';
 
+
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Employee', href: '/employee' },
     { title: 'Edit Employee', href: '#' },
 ];
 
 interface Employee {
-    employee_id: string;
+    id_number: string;
     first_name: string;
-    middle_name?: string;
     last_name: string;
     department: string;
     position: string;
@@ -22,9 +22,8 @@ export default function EmployeeEdit() {
     const employee = props.employee;
 
     const { data, setData, put, processing, errors } = useForm<Employee>({
-        employee_id: employee.employee_id,
+        id_number: employee.id_number,
         first_name: employee.first_name,
-        middle_name: employee.middle_name || '',
         last_name: employee.last_name,
         department: employee.department,
         position: employee.position,
@@ -32,7 +31,7 @@ export default function EmployeeEdit() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/employee/update/${data.employee_id}`);
+        put(`/employee/update/${data.id_number}`);
     };
 
     return (
@@ -50,16 +49,6 @@ export default function EmployeeEdit() {
                             className="w-full px-3 py-2 border rounded"
                         />
                         {errors.first_name && <p className="text-red-500">{errors.first_name}</p>}
-                    </div>
-
-                    <div>
-                        <label className="block font-medium">Middle Name</label>
-                        <input
-                            type="text"
-                            value={data.middle_name}
-                            onChange={(e) => setData('middle_name', e.target.value)}
-                            className="w-full px-3 py-2 border rounded"
-                        />
                     </div>
 
                     <div>

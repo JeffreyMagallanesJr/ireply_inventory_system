@@ -5,8 +5,9 @@ use Inertia\Inertia;
 use App\Http\Controllers\EmployeeController;
 
 Route::get('/', function () {
-    return Inertia::render('auth/login'); // Changed to match the correct path
+    return Inertia::render('auth/login'); 
 })->name('home');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
@@ -14,11 +15,35 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('dashboard', [
+            'user' => Auth::user(),
+        ]);
+    })->name('dashboard');
+
+    Route::get('/employee', [EmployeeController::class, 'index'])->name('employee');
+
+    Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index');
+    Route::get('/employee/employee-form', [EmployeeController::class, 'create'])->name('employee.create');
+    Route::post('/employee', [EmployeeController::class, 'store'])->name('employee.store');
+
+    Route::get('/employee/employee-view/{id}', [EmployeeController::class, 'show']);
+
+    Route::get('/employee/employee-edit/{id}', [EmployeeController::class, 'edit']);
+    
+    Route::delete('/employee/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
+
+    Route::put('/employee/update/{id}', [EmployeeController::class, 'update'])->name('employee.update');
+
+
+});
+
 Route::middleware(['auth'])->group(function () {
-        Route::get('employee', function () {
-            return Inertia::render('employee');
-        })->name('employee');
-    });
+    Route::get('equipment', function () {
+        return Inertia::render('equipment');
+    })->name('equipment');
+});
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
