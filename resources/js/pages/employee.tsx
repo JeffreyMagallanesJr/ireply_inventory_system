@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { useForm } from '@inertiajs/react'; // Import useForm
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
-import { Link, usePage } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -26,6 +26,19 @@ export default function Employee({ employees }: { employees: Employee[] }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortColumn, setSortColumn] = useState<'id_number' | 'last_name' | 'department' | 'position'>('id_number');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+    const { delete: destroy } = useForm(); // Inertia's delete function
+
+    // Function to handle employee deletion
+    const handleDelete = (id: string) => {
+        if (confirm('Are you sure you want to delete this employee?')) {
+            destroy(route('employee.destroy', id), {
+                preserveScroll: true,
+                onSuccess: () => alert('Employee deleted successfully'),
+                onError: (errors) => alert(errors.message),
+            });
+        }
+    };
 
     const sortedEmployees = [...employees]
         .filter(employee =>
@@ -111,7 +124,12 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                                                 Edit
                                             </Link>
 
-                                            <button className="ml-2 px-2 py-1 text-red-500 hover:underline">Delete</button>
+                                            <button
+                                                onClick={() => handleDelete(employee.id_number)}
+                                                className="ml-2 px-2 py-1 text-red-500 hover:underline"
+                                            >
+                                                Delete
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
