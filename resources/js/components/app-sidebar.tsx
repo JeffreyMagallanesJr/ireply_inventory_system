@@ -10,21 +10,22 @@ import AppLogo from './app-logo';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        url: '/ireply_inventory/public/dashboard',
+        url: '/dashboard',
         icon: LayoutGrid,
     },
     {
         title: 'Employee',
-        url: '/ireply_inventory/public/employee',
+        url: '/employee',
         icon: UserCircle,
     },
     {
         title: 'Equipment',
-        url: '/ireply_inventory/public/equipment',
+        url: '/equipment',
         icon: Monitor,
     },
 ];
 
+{/* 
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
@@ -37,6 +38,7 @@ const footerNavItems: NavItem[] = [
         icon: BookOpen,
     },
 ];
+*/}
 
 export function AppSidebar() {
     return (
@@ -58,7 +60,7 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                {/* <NavFooter items={footerNavItems} className="mt-auto" /> */}
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
