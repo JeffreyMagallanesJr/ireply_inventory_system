@@ -15,6 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface Equipment {
     id: number;
     item: string;
+    description: string;
     serial_number: string;
     quantity: number;
     status: string;
@@ -22,7 +23,7 @@ interface Equipment {
 
 export default function Equipment({ equipments }: { equipments: Equipment[] }) {
     const [searchTerm, setSearchTerm] = useState('');
-    const [sortColumn, setSortColumn] = useState<'item' | 'serial_number' | 'quantity' | 'status'>('item');
+    const [sortColumn, setSortColumn] = useState<'item' | 'description' | 'serial_number' | 'quantity' | 'status'>('item');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     const { delete: destroy } = useForm();
@@ -49,7 +50,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
             return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
         });
 
-    const toggleSort = (column: 'item' | 'serial_number' | 'quantity' | 'status') => {
+        const toggleSort = (column: 'item' | 'description' | 'serial_number' | 'quantity' | 'status') => {
         if (sortColumn === column) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
         } else {
@@ -80,6 +81,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                             <tr className="bg-gray-100 dark:bg-gray-800">
                                 {[
                                     { key: 'item', label: 'Item Name' },
+                                    { key: 'description', label: 'Description' },
                                     { key: 'serial_number', label: 'Serial Number' },
                                     { key: 'quantity', label: 'Quantity' },
                                     { key: 'status', label: 'Status' },
@@ -87,7 +89,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                                     <th
                                         key={key}
                                         className="border border-gray-300 dark:border-gray-700 p-2 cursor-pointer text-center"
-                                        onClick={() => toggleSort(key as 'item' | 'serial_number' | 'quantity' | 'status')}
+                                        onClick={() => toggleSort(key as 'item' | 'serial_number' | 'quantity' | 'status' | 'description')}
                                     >
                                         <div className="flex items-center justify-center gap-1">
                                             {label}
@@ -104,6 +106,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                                 sortedEquipments.map((equipment) => (
                                     <tr key={equipment.id} className="border border-gray-300 dark:border-gray-700">
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.item}</td>
+                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.description}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.serial_number}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.quantity}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.status}</td>
