@@ -12,12 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('equipments', function (Blueprint $table) {
-            $table->id('id');
+            $table->id(); // Automatically creates an 'id' column as primary key
             $table->string('item');
             $table->text('description');
-            $table->string('serial_number');
+            $table->string('serial_number')->unique(); // Ensures serial numbers are unique
             $table->date('stored_date');
-            $table->enum('status', ['available','unavailable']);
+            $table->enum('status', ['available', 'unavailable'])->default('available');
+            $table->integer('quantity')->default(1); // Added quantity column with a default value
+            $table->timestamps(); // Adds created_at and updated_at
         });
     }
 
