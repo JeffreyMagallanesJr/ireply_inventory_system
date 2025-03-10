@@ -14,7 +14,6 @@ export default function EquipmentForm() {
         specs: "",
         description: "",
         serial_number: "",
-        quantity: "",
         status: "available",
         stored_date: "",
     });
@@ -106,20 +105,8 @@ export default function EquipmentForm() {
                         {errors.serial_number && <p className="text-red-500 text-sm">{errors.serial_number}</p>}
                     </div>
 
-                    {/* Quantity & Status */}
+                    {/* Status */}
                     <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-gray-700 dark:text-gray-300">Quantity</label>
-                            <input
-                                type="number"
-                                name="quantity"
-                                value={formData.quantity}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2 border rounded"
-                            />
-                            {errors.quantity && <p className="text-red-500 text-sm">{errors.quantity}</p>}
-                        </div>
-
                         <div>
                             <label className="block text-gray-700 dark:text-gray-300">Status</label>
                             <select
