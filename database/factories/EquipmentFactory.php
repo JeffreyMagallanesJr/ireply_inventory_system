@@ -16,6 +16,7 @@ class EquipmentFactory extends Factory
     {
         return [
             'item' => $this->faker->word(),
+            'specs' => $this->faker->word() . ': ' . $this->faker->words(3, true),
             'description' => $this->faker->sentence(),
             'serial_number' => $this->faker->unique()->bothify('SN-#####'),
             'stored_date' => $this->faker->date(),

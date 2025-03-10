@@ -13,6 +13,7 @@ class Equipment extends Model
 
     protected $fillable = [
         'item',
+        'specs',
         'description',
         'serial_number',
         'stored_date',
