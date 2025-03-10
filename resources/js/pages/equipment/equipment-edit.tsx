@@ -11,10 +11,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface Equipment {
     id: number;
     item: string;
+    specs: string;
+    description: string;
     serial_number: string;
-    quantity: number;
     status: string;
-    stored_date: string;
 }
 
 export default function EquipmentEdit() {
@@ -24,10 +24,10 @@ export default function EquipmentEdit() {
     const { data, setData, put, processing, errors } = useForm<Equipment>({
         id: equipment.id,
         item: equipment.item,
+        specs: equipment.specs,
+        description: equipment.description,
         serial_number: equipment.serial_number,
-        quantity: equipment.quantity,
         status: equipment.status,
-        stored_date: equipment.stored_date,
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -50,6 +50,28 @@ export default function EquipmentEdit() {
                             className="w-full px-3 py-2 border rounded"
                         />
                         {errors.item && <p className="text-red-500">{errors.item}</p>}
+                    </div>
+
+                    <div>
+                        <label className="block font-medium">Specs</label>
+                        <input
+                            type="text"
+                            value={data.specs}
+                            onChange={(e) => setData('specs', e.target.value)}
+                            className="w-full px-3 py-2 border rounded"
+                        />
+                        {errors.specs && <p className="text-red-500">{errors.specs}</p>}
+                    </div>
+
+                    <div>
+                        <label className="block font-medium">Description</label>
+                        <input
+                            type="text"
+                            value={data.description}
+                            onChange={(e) => setData('description', e.target.value)}
+                            className="w-full px-3 py-2 border rounded"
+                        />
+                        {errors.description && <p className="text-red-500">{errors.description}</p>}
                     </div>
 
                     <div>
