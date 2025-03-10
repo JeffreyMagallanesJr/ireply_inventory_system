@@ -13,11 +13,10 @@ interface Equipment {
     id: number;
     item: string;
     serial_number: string;
-    quantity: number;
+    specs: string;
+    description: string;
     status: string;
     stored_date: string;
-    created_at: string;
-    updated_at: string;
 }
 
 export default function EquipmentView() {
@@ -32,11 +31,10 @@ export default function EquipmentView() {
                 <div className="space-y-2">
                     <p><strong>Item Name:</strong> {equipment.item}</p>
                     <p><strong>Serial Number:</strong> {equipment.serial_number}</p>
-                    <p><strong>Quantity:</strong> {equipment.quantity}</p>
+                    <p><strong>Specs:</strong> {equipment.specs}</p>
+                    <p><strong>Description:</strong> {equipment.description}</p>
                     <p><strong>Status:</strong> {equipment.status}</p>
                     <p><strong>Stored Date:</strong> {equipment.stored_date}</p>
-                    <p><strong>Created At:</strong> {new Date(equipment.created_at).toLocaleString()}</p>
-                    <p><strong>Updated At:</strong> {new Date(equipment.updated_at).toLocaleString()}</p>
                 </div>
                 <div className="mt-4">
                     <Link href="/equipment" className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Back</Link>
