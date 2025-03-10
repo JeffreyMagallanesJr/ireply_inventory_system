@@ -4,6 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
+import { format } from 'date-fns';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -113,7 +114,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.item}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.description}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.serial_number}</td>
-                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.stored_date}</td>
+                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{format(new Date(equipment.stored_date), 'MMMM d, yyyy')}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.status}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
                                             <Link

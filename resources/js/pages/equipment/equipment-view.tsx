@@ -3,6 +3,7 @@ import { Head, usePage } from '@inertiajs/react';
 import { type PageProps } from '@/types';
 import { BreadcrumbItem } from '@/types';
 import { Link } from '@inertiajs/react';
+import { format } from 'date-fns';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Equipment', href: '/equipment/items' },
@@ -34,7 +35,7 @@ export default function EquipmentView() {
                     <p><strong>Specs:</strong> {equipment.specs}</p>
                     <p><strong>Description:</strong> {equipment.description}</p>
                     <p><strong>Status:</strong> {equipment.status}</p>
-                    <p><strong>Stored Date:</strong> {equipment.stored_date}</p>
+                    <p><strong>Stored Date:</strong> {format(new Date(equipment.stored_date), 'MMMM d, yyyy')}</p>
                 </div>
                 <div className="mt-4">
                     <Link href="/equipment/items" className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Back</Link>
