@@ -33,7 +33,7 @@ class EquipmentController extends Controller
             'serial_number' => 'required|unique:equipments,serial_number',
             'stored_date' => 'required|date',
             'status' => 'required|in:available,unavailable',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'nullable|integer|min:1',
         ]);
 
         // Store data in the database
@@ -99,7 +99,7 @@ class EquipmentController extends Controller
             'serial_number' => 'required|string|unique:equipments,serial_number,' . $id,
             'stored_date' => 'required|date',
             'status' => 'required|in:available,unavailable',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'nullable|integer|min:1',
         ]);
 
         // Find equipment by ID

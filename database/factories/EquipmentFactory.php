@@ -21,7 +21,7 @@ class EquipmentFactory extends Factory
             'serial_number' => $this->faker->unique()->bothify('SN-#####'),
             'stored_date' => $this->faker->date(),
             'status' => $this->faker->randomElement(['Available', 'Unavailable']),
-            'quantity' => $this->faker->numberBetween(1, 50),
+            'quantity' => '1',
         ];
     }
 }
