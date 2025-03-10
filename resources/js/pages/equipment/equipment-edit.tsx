@@ -63,17 +63,6 @@ export default function EquipmentEdit() {
                         {errors.serial_number && <p className="text-red-500">{errors.serial_number}</p>}
                     </div>
 
-                    <div>
-                        <label className="block font-medium">Quantity</label>
-                        <input
-                            type="number"
-                            value={data.quantity}
-                            onChange={(e) => setData('quantity', e.target.value)}
-                            className="w-full px-3 py-2 border rounded"
-                        />
-                        {errors.quantity && <p className="text-red-500">{errors.quantity}</p>}
-                    </div>
-
                     <div className="mt-4">
                         <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" disabled={processing}>
                             Update Equipment
