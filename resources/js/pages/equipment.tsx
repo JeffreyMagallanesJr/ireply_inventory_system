@@ -10,7 +10,12 @@ const breadcrumbs: BreadcrumbItem[] = [
         title: 'Equipment',
         href: '/equipment',
     },
+    {
+        title: 'Items',
+        href: '/equipment/items',
+    },
 ];
+
 
 interface Equipment {
     id: number;

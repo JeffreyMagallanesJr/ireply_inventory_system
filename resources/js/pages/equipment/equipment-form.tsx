@@ -11,6 +11,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function EquipmentForm() {
     const [formData, setFormData] = useState({
         item: "",
+        specs: "",
+        description: "",
         serial_number: "",
         quantity: "",
         status: "available",
@@ -39,7 +41,7 @@ export default function EquipmentForm() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateForm()) {
-            router.post('/equipment', formData, {
+            router.post('/equipment/items', formData, {
                 onSuccess: () => console.log("Equipment added successfully!"),
                 onError: (errors) => setErrors(errors),
             });
@@ -63,6 +65,32 @@ export default function EquipmentForm() {
                             className="w-full px-3 py-2 border rounded"
                         />
                         {errors.item && <p className="text-red-500 text-sm">{errors.item}</p>}
+                    </div>
+
+                    {/* Specs */}
+                    <div>
+                        <label className="block text-gray-700 dark:text-gray-300">Specs</label>
+                        <input
+                            type="text"
+                            name="specs"
+                            value={formData.specs}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded"
+                        />
+                        {errors.specs && <p className="text-red-500 text-sm">{errors.specs}</p>}
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                        <label className="block text-gray-700 dark:text-gray-300">Description</label>
+                        <input
+                            type="text"
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded"
+                        />
+                        {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
                     </div>
 
                     {/* Serial Number */}

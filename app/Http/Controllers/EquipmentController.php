@@ -28,6 +28,7 @@ class EquipmentController extends Controller
         // Validate input
         $validated = $request->validate([
             'item' => 'required|string|max:255',
+            'specs' => 'nullable|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|unique:equipments,serial_number',
             'stored_date' => 'required|date',
@@ -38,7 +39,7 @@ class EquipmentController extends Controller
         // Store data in the database
         Equipment::create($validated);
 
-        return redirect('/equipment')->with('success', 'Equipment added successfully!');
+        return redirect('/equipment/items')->with('success', 'Equipment added successfully!');
     }
 
     public function show($id)
@@ -93,6 +94,7 @@ class EquipmentController extends Controller
         // Validate request
         $validated = $request->validate([
             'item' => 'required|string|max:255',
+            'specs' => 'nullable|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string|unique:equipments,serial_number,' . $id,
             'stored_date' => 'required|date',
