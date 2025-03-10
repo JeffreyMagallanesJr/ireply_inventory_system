@@ -8,7 +8,7 @@ import { ChevronsUpDown } from 'lucide-react';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Equipment',
-        href: '/equipment',
+        href: '/equipment/items',
     },
     {
         title: 'Items',

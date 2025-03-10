@@ -26,7 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/employee/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
     // Equipment Routes
-    Route::get('/equipment', [EquipmentController::class, 'index'])->name('equipment.index');
+    Route::redirect('/equipment', '/equipment/items');
     Route::get('/equipment/items', [EquipmentController::class, 'index'])->name('equipment.index');
     Route::get('/equipment/equipment-form', [EquipmentController::class, 'create'])->name('equipment.create');
     Route::post('/equipment/items', [EquipmentController::class, 'store'])->name('equipment.store');

@@ -4,7 +4,7 @@ import { Head, useForm, usePage } from '@inertiajs/react';
 import { BreadcrumbItem, PageProps } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Equipment', href: '/equipment' },
+    { title: 'Equipment', href: '/equipment/items' },
     { title: 'Edit Equipment', href: '#' },
 ];
 
@@ -78,7 +78,7 @@ export default function EquipmentEdit() {
                         <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600" disabled={processing}>
                             Update Equipment
                         </button>
-                        <a href="/equipment" className="ml-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                        <a href="/equipment/items" className="ml-2 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
                             Cancel
                         </a>
                     </div>

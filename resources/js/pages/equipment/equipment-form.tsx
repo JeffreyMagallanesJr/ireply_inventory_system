@@ -4,7 +4,7 @@ import { type BreadcrumbItem } from "@/types";
 import { Head, router } from "@inertiajs/react";
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: "Equipment", href: "/equipment" },
+    { title: "Equipment", href: "/equipment/items" },
     { title: "Add Equipment", href: "/equipment/add" },
 ];
 

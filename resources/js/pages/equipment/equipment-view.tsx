@@ -5,7 +5,7 @@ import { BreadcrumbItem } from '@/types';
 import { Link } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Equipment', href: '/equipment' },
+    { title: 'Equipment', href: '/equipment/items' },
     { title: 'View Equipment', href: '#' },
 ];
 
@@ -37,7 +37,7 @@ export default function EquipmentView() {
                     <p><strong>Stored Date:</strong> {equipment.stored_date}</p>
                 </div>
                 <div className="mt-4">
-                    <Link href="/equipment" className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Back</Link>
+                    <Link href="/equipment/items" className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Back</Link>
                     <Link href={`/equipment/equipment-edit/${equipment.id}`} className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Edit</Link>
                 </div>
             </div>
