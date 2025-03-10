@@ -22,13 +22,13 @@ interface Equipment {
     item: string;
     description: string;
     serial_number: string;
-    quantity: number;
+    stored_date: string;
     status: string;
 }
 
 export default function Equipment({ equipments }: { equipments: Equipment[] }) {
     const [searchTerm, setSearchTerm] = useState('');
-    const [sortColumn, setSortColumn] = useState<'item' | 'description' | 'serial_number' | 'quantity' | 'status'>('item');
+    const [sortColumn, setSortColumn] = useState<'item' | 'description' | 'serial_number' | 'stored_date' | 'status'>('item');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     const { delete: destroy } = useForm();
@@ -55,7 +55,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
             return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
         });
 
-        const toggleSort = (column: 'item' | 'description' | 'serial_number' | 'quantity' | 'status') => {
+        const toggleSort = (column: 'item' | 'description' | 'serial_number' | 'stored_date' | 'status') => {
         if (sortColumn === column) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
         } else {
@@ -88,13 +88,13 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                                     { key: 'item', label: 'Item Name' },
                                     { key: 'description', label: 'Description' },
                                     { key: 'serial_number', label: 'Serial Number' },
-                                    { key: 'quantity', label: 'Quantity' },
+                                    { key: 'stored_date', label: 'Stored Date' },
                                     { key: 'status', label: 'Status' },
                                 ].map(({ key, label }) => (
                                     <th
                                         key={key}
                                         className="border border-gray-300 dark:border-gray-700 p-2 cursor-pointer text-center"
-                                        onClick={() => toggleSort(key as 'item' | 'serial_number' | 'quantity' | 'status' | 'description')}
+                                        onClick={() => toggleSort(key as 'item' | 'description' | 'serial_number' | 'stored_date' | 'status')}
                                     >
                                         <div className="flex items-center justify-center gap-1">
                                             {label}
@@ -113,7 +113,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.item}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.description}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.serial_number}</td>
-                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.quantity}</td>
+                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.stored_date}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.status}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
                                             <Link
