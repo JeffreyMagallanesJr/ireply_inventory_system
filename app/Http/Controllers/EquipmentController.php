@@ -18,6 +18,14 @@ class EquipmentController extends Controller
         ]);
     }
 
+    public function inventory(): Response
+    {
+        $equipments = Equipment::all(); // Fetch all equipment from the database
+        return Inertia::render('equipment/inventory', [
+            'equipments' => $equipments,
+        ]);
+    }
+
     public function create(): Response
     {
         return Inertia::render('equipment/equipment-form');
