@@ -55,7 +55,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Inventory" />
-            <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min p-4 bg-white dark:bg-gray-900">
+            <div className="relative min-h-[100vh] flex overflow-hidden rounded-xl md:min-h-min p-4 bg-white dark:bg-gray-900 items-center justify-center">
                 <div className="flex gap-2">
                     {Object.entries(grouped_equipments).map(([item_name, { available, unavailable }]) => (
                         <div key={item_name} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
