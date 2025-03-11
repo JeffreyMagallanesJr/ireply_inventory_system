@@ -40,6 +40,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/equipment/update/{id}', [EquipmentController::class, 'update'])->name('equipment.update');
     Route::delete('/equipment/{id}', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
 
+    // Route::redirect('/equipment/items/{item.name}', )
+
     // Route::get('/equipment/inventory', function() {
     //     return 'Welcome to inventory page.';
     // });

@@ -59,7 +59,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                 <div className="flex gap-2">
                     {Object.entries(grouped_equipments).map(([item_name, { available, unavailable }]) => (
                         <div key={item_name} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                            <a href={'/equipment/inventory/' + (item_name)}>{item_name}: {available.length} / {available.length + unavailable.length}</a>
+                            <a href={'/equipment/items/' + (item_name)}>{item_name}: {available.length} / {available.length + unavailable.length}</a>
                         </div>
                     ))}
                 </div>
