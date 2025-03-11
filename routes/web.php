@@ -1,16 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EquipmentController;
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard'); // Redirect authenticated users to the dashboard
+    }
     return Inertia::render('auth/login');
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
+    Route::get('/dashboard', function () {
         return Inertia::render('dashboard', [
             'user' => Auth::user(), // 👈 Pass the authenticated user
         ]);
