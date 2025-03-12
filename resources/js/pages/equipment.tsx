@@ -28,7 +28,10 @@ interface Equipment {
 }
 
 export default function Equipment({ equipments }: { equipments: Equipment[] }) {
-    const [searchTerm, setSearchTerm] = useState('Keyboard');
+    const searchParams = new URLSearchParams(window.location.search);
+    const url = searchParams.get('search');
+    console.log(url);
+    const [searchTerm, setSearchTerm] = useState(url || '');
     const [sortColumn, setSortColumn] = useState<'item' | 'description' | 'serial_number' | 'stored_date' | 'status'>('item');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
