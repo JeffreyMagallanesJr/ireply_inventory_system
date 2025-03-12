@@ -1,19 +1,6 @@
-import { useState } from "react";
-import AppLayout from "@/layouts/app-layout";
-import { type BreadcrumbItem } from "@/types";
-import { Head } from "@inertiajs/react";
-import { router } from "@inertiajs/react";
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: "Employee",
-        href: "/employee",
-    },
-    {
-        title: "Add Employee",
-        href: "/employee/add",
-    },
-];
+import { useState, useRef } from "react";
+import { Head, router } from "@inertiajs/react";
+import { DialogClose } from "@/components/ui/dialog";
 
 export default function EmployeeForm() {
     const [formData, setFormData] = useState({
@@ -30,6 +17,7 @@ export default function EmployeeForm() {
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const dialogCloseRef = useRef<HTMLButtonElement>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -43,7 +31,6 @@ export default function EmployeeForm() {
                 newErrors[key] = "This field is required";
             }
         });
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -54,21 +41,19 @@ export default function EmployeeForm() {
             router.post('/employee', formData, {
                 onSuccess: () => {
                     console.log("Employee added successfully!");
+                    dialogCloseRef.current?.click(); // Close the dialog
                 },
-                onError: (errors) => {
-                    setErrors(errors);
-                }
+                onError: (errors) => setErrors(errors)
             });
         }
     };
-    
+
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <>
             <Head title="Add Employee" />
-            <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-900 shadow-md rounded-lg">
-                <h2 className="text-2xl font-semibold mb-4">Add Employee</h2>
+            <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-900">
+                <h2 className="text-2xl font-semibold mb-4"></h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {/* Employee ID */}
                     <div>
                         <label className="block text-gray-700 dark:text-gray-300">Employee ID</label>
                         <input
@@ -80,13 +65,8 @@ export default function EmployeeForm() {
                         />
                         {errors.id_number && <p className="text-red-500 text-sm">{errors.id_number}</p>}
                     </div>
-                    
-                    {/* Name Fields */}
-                    <div className="grid grid-cols-3 gap-4">
-                        {[
-                            { label: "First Name", name: "first_name" },
-                            { label: "Last Name", name: "last_name" },
-                        ].map(({ label, name }) => (
+                    <div className="grid grid-cols-2 gap-4">
+                        {[ { label: "First Name", name: "first_name" }, { label: "Last Name", name: "last_name" }].map(({ label, name }) => (
                             <div key={name}>
                                 <label className="block text-gray-700 dark:text-gray-300">{label}</label>
                                 <input
@@ -100,13 +80,8 @@ export default function EmployeeForm() {
                             </div>
                         ))}
                     </div>
-
-                    {/* Email & Contact Number */}
                     <div className="grid grid-cols-2 gap-4">
-                        {[
-                            { label: "Email", name: "email", type: "email" },
-                            { label: "Contact Number", name: "contact_number" },
-                        ].map(({ label, name, type }) => (
+                        {[ { label: "Email", name: "email", type: "email" }, { label: "Contact Number", name: "contact_number" }].map(({ label, name, type }) => (
                             <div key={name}>
                                 <label className="block text-gray-700 dark:text-gray-300">{label}</label>
                                 <input
@@ -120,8 +95,6 @@ export default function EmployeeForm() {
                             </div>
                         ))}
                     </div>
-
-                    {/* Address */}
                     <div>
                         <label className="block text-gray-700 dark:text-gray-300">Address</label>
                         <textarea
@@ -132,14 +105,8 @@ export default function EmployeeForm() {
                         />
                         {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
                     </div>
-
-                    {/* Department, Position & Date Hired */}
                     <div className="grid grid-cols-3 gap-4">
-                        {[
-                            { label: "Department", name: "department" },
-                            { label: "Position", name: "position" },
-                            { label: "Date Hired", name: "date_hired", type: "date" },
-                        ].map(({ label, name, type }) => (
+                        {[ { label: "Department", name: "department" }, { label: "Position", name: "position" }, { label: "Date Hired", name: "date_hired", type: "date" }].map(({ label, name, type }) => (
                             <div key={name}>
                                 <label className="block text-gray-700 dark:text-gray-300">{label}</label>
                                 <input
@@ -153,15 +120,17 @@ export default function EmployeeForm() {
                             </div>
                         ))}
                     </div>
-
-                    <button
-                        type="submit"
-                        className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                    >
+                    
+                    <button type="submit" className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
                         Submit
                     </button>
+                    
+                    {/* Hidden DialogClose Button */}
+                    <DialogClose asChild>
+                        <button ref={dialogCloseRef} className="hidden" />
+                    </DialogClose>
                 </form>
             </div>
-        </AppLayout>
+        </>
     );
 }

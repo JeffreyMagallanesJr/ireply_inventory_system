@@ -1,14 +1,6 @@
-import AppLayout from '@/layouts/app-layout';
-import { Head, usePage } from '@inertiajs/react';
-import { type PageProps } from '@/types';
-import { BreadcrumbItem } from '@/types';
-import { Link } from '@inertiajs/react';
-import { format } from 'date-fns';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Employee', href: '/employee' },
-    { title: 'View Employee', href: '#' },
-];
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import { format } from "date-fns";
+import { Link } from "@inertiajs/react";
 
 interface Employee {
     id_number: string;
@@ -22,16 +14,14 @@ interface Employee {
     date_hired: string;
 }
 
-export default function EmployeeView() {
-    const { props } = usePage<PageProps<{ employee: Employee }>>();
-    const employee = props.employee;
-
+export default function EmployeeView({ employee }: { employee: Employee }) {
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="View Employee" />
-            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow">
-                <h2 className="text-2xl font-semibold mb-4">Employee Details</h2>
-                <div className="space-y-2">
+        <Dialog open={true}>
+            <DialogContent className="max-w-lg">
+                <DialogHeader>
+                    <DialogTitle>Employee Details</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-2 p-4">
                     <p><strong>Employee ID:</strong> {employee.id_number}</p>
                     <p><strong>Name:</strong> {employee.first_name} {employee.last_name}</p>
                     <p><strong>Email:</strong> {employee.email}</p>
@@ -40,13 +30,22 @@ export default function EmployeeView() {
                     <p><strong>Department:</strong> {employee.department}</p>
                     <p><strong>Position:</strong> {employee.position}</p>
                     <p><strong>Date Hired:</strong> {format(new Date(employee.date_hired), 'MMMM d, yyyy')}</p>
-
                 </div>
-                <div className="mt-4">
-                    <Link href="/employee" className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Back</Link>
-                    <Link href={`/employee/employee-edit/${employee.id_number}`} className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Edit</Link>
+                <div className="flex justify-end space-x-3">
+                    <Link 
+                        href="/employee" 
+                        className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                    >
+                        Back
+                    </Link>
+                    <Link 
+                        href={`/employee/employee-edit/${employee.id_number}`} 
+                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                    >
+                        Edit
+                    </Link>
                 </div>
-            </div>
-        </AppLayout>
+            </DialogContent>
+        </Dialog>
     );
 }
