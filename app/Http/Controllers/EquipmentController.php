@@ -21,7 +21,7 @@ class EquipmentController extends Controller
     public function inventory(): Response
     {
         $equipments = Equipment::all(); // Fetch all equipment from the database
-        return Inertia::render('equipment/inventory', [
+        return Inertia::render('equipment/equipment-inventory', [
             'equipments' => $equipments,
         ]);
     }
@@ -70,6 +70,21 @@ class EquipmentController extends Controller
             'equipment' => $equipment
         ]);
     }
+
+    public function showByItem($item)
+    {
+        $decodedItem = urldecode($item); // Decode URL for spaces/special characters
+        $equipments = Equipment::where('item', $decodedItem)->get(); // Get all matching items
+
+        if ($equipments->isEmpty()) {
+            abort(404, 'Equipment not found');
+        }
+
+        return Inertia::render('equipment/equipment-item', [
+            'equipments' => $equipments
+        ]);
+    }
+
 
     public function edit($id)
     {
