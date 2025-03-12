@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Equipment Routes
     Route::redirect('/equipment', '/equipment/items');
     Route::get('/equipment/items', [EquipmentController::class, 'index'])->name('equipment.index');
+    Route::get('/equipment/inventory', [EquipmentController::class, 'inventory'])->name('equipment.inventory');
     Route::get('/equipment/equipment-form', [EquipmentController::class, 'create'])->name('equipment.create');
     Route::post('/equipment/items', [EquipmentController::class, 'store'])->name('equipment.store');
     Route::get('/equipment/equipment-view/{id}', [EquipmentController::class, 'show'])->name('equipment.show');
@@ -40,9 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/equipment/update/{id}', [EquipmentController::class, 'update'])->name('equipment.update');
     Route::delete('/equipment/{id}', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
 
-    Route::get('/equipment/inventory', function() {
-        return 'Welcome to inventory page.';
-    });
+    // Route::get('/equipment/inventory', function() {
+    //     return 'Welcome to inventory page.';
+    // });
 });
 
 require __DIR__.'/settings.php';

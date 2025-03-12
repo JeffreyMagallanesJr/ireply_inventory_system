@@ -20,8 +20,6 @@ interface Employee {
     department: string;
     position: string;
     date_hired: string;
-    created_at: string;
-    updated_at: string;
 }
 
 export default function EmployeeView() {
@@ -42,8 +40,6 @@ export default function EmployeeView() {
                     <p><strong>Department:</strong> {employee.department}</p>
                     <p><strong>Position:</strong> {employee.position}</p>
                     <p><strong>Date Hired:</strong> {format(new Date(employee.date_hired), 'MMMM d, yyyy')}</p>
-                    <p><strong>Created At:</strong> {new Date(employee.created_at).toLocaleString()}</p>
-                    <p><strong>Updated At:</strong> {new Date(employee.updated_at).toLocaleString()}</p>
 
                 </div>
                 <div className="mt-4">
