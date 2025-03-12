@@ -7,7 +7,7 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/auth-layout';
+import AuthLayout from '@/layouts/register-layout';
 
 type RegisterForm = {
     first_name: string;
@@ -36,122 +36,135 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Create an account" description="Enter your details below to create your account">
+        <AuthLayout title="Create an account" description="">
+            <br />
+         
             <Head title="Register" />
             <form className="flex flex-col gap-6" onSubmit={submit}>
-                <div className="grid gap-6">
-                <div className="grid gap-2">
-                        <Label htmlFor="name">First Name</Label>
-                        <Input
-                            id="first_name"
-                            type="text"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="first_name"
-                            value={data.first_name}
-                            onChange={(e) => setData('first_name', e.target.value)}
-                            disabled={processing}
-                            placeholder="First Name"
-                        />
-                        <InputError message={errors.first_name} className="mt-2" />
-                    </div>
+    <div className="grid gap-6">
+        {/* First row with First Name and Last Name */}
+        <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-2">
+                <Label htmlFor="first_name">First Name</Label>
+                <Input
+                    id="first_name"
+                    type="text"
+                    required
+                    autoFocus
+                    tabIndex={1}
+                    autoComplete="given-name"
+                    value={data.first_name}
+                    onChange={(e) => setData('first_name', e.target.value)}
+                    disabled={processing}
+                    placeholder="First Name"
+                    className="w-full"
+                />
+                <InputError message={errors.first_name} className="mt-2" />
+            </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="last_name">Last Name</Label>
-                        <Input
-                            id="name"
-                            type="text"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="last_name"
-                            value={data.last_name}
-                            onChange={(e) => setData('last_name', e.target.value)}
-                            disabled={processing}
-                            placeholder="Last Name"
-                        />
-                        <InputError message={errors.last_name} className="mt-2" />
-                    </div>
+            <div className="grid gap-2">
+                <Label htmlFor="last_name">Last Name</Label>
+                <Input
+                    id="last_name"
+                    type="text"
+                    required
+                    tabIndex={2}
+                    autoComplete="family-name"
+                    value={data.last_name}
+                    onChange={(e) => setData('last_name', e.target.value)}
+                    disabled={processing}
+                    placeholder="Last Name"
+                    className="w-full"
+                />
+                <InputError message={errors.last_name} className="mt-2" />
+            </div>
+        </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="username">Username</Label>
-                        <Input
-                            id="username"
-                            type="text"
-                            required
-                            autoFocus
-                            tabIndex={1}
-                            autoComplete="username"
-                            value={data.username}
-                            onChange={(e) => setData('username', e.target.value)}
-                            disabled={processing}
-                            placeholder="Username"
-                        />
-                        <InputError message={errors.username} className="mt-2" />
-                    </div>
+        {/* Remaining fields in a single column */}
+        <div className="grid gap-4">
+            <div className="grid gap-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                    id="username"
+                    type="text"
+                    required
+                    tabIndex={3}
+                    autoComplete="username"
+                    value={data.username}
+                    onChange={(e) => setData('username', e.target.value)}
+                    disabled={processing}
+                    placeholder="Username"
+                    className="w-full"
+                />
+                <InputError message={errors.username} className="mt-2" />
+            </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email address</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            required
-                            tabIndex={2}
-                            autoComplete="email"
-                            value={data.email}
-                            onChange={(e) => setData('email', e.target.value)}
-                            disabled={processing}
-                            placeholder="email@example.com"
-                        />
-                        <InputError message={errors.email} />
-                    </div>
+            <div className="grid gap-2">
+                <Label htmlFor="email">Email address</Label>
+                <Input
+                    id="email"
+                    type="email"
+                    required
+                    tabIndex={4}
+                    autoComplete="email"
+                    value={data.email}
+                    onChange={(e) => setData('email', e.target.value)}
+                    disabled={processing}
+                    placeholder="email@example.com"
+                    className="w-full"
+                />
+                <InputError message={errors.email} />
+            </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                            id="password"
-                            type="password"
-                            required
-                            tabIndex={3}
-                            autoComplete="new-password"
-                            value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
-                            disabled={processing}
-                            placeholder="Password"
-                        />
-                        <InputError message={errors.password} />
-                    </div>
+            <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                    id="password"
+                    type="password"
+                    required
+                    tabIndex={5}
+                    autoComplete="new-password"
+                    value={data.password}
+                    onChange={(e) => setData('password', e.target.value)}
+                    disabled={processing}
+                    placeholder="Password"
+                    className="w-full"
+                />
+                <InputError message={errors.password} />
+            </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
-                        <Input
-                            id="password_confirmation"
-                            type="password"
-                            required
-                            tabIndex={4}
-                            autoComplete="new-password"
-                            value={data.password_confirmation}
-                            onChange={(e) => setData('password_confirmation', e.target.value)}
-                            disabled={processing}
-                            placeholder="Confirm password"
-                        />
-                        <InputError message={errors.password_confirmation} />
-                    </div>
+            <div className="grid gap-2">
+                <Label htmlFor="password_confirmation">Confirm password</Label>
+                <Input
+                    id="password_confirmation"
+                    type="password"
+                    required
+                    tabIndex={6}
+                    autoComplete="new-password"
+                    value={data.password_confirmation}
+                    onChange={(e) => setData('password_confirmation', e.target.value)}
+                    disabled={processing}
+                    placeholder="Confirm password"
+                    className="w-full"
+                />
+                <InputError message={errors.password_confirmation} />
+            </div>
+        </div>
 
-                    <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Create account
-                    </Button>
-                </div>
+        <Button type="submit" className="mt-2 w-full" tabIndex={7} disabled={processing}>
+            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+            Register
+        </Button>
+    </div>
 
-                <div className="text-muted-foreground text-center text-sm">
-                    Already have an account?{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
-                        Log in
-                    </TextLink>
-                </div>
-            </form>
+    <div className="text-muted-foreground text-center text-sm">
+        Already have an account?{' '}
+        <TextLink href={route('login')} tabIndex={8}>
+            Log in
+        </TextLink>
+    </div>
+</form>
+
         </AuthLayout>
     );
 }

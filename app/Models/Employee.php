@@ -9,6 +9,8 @@ class Employee extends Model
 {
     use HasFactory;
 
+    protected $table = 'employees'; // Match the migration table name
+
     protected $fillable = [
         'id_number',
         'first_name',

@@ -3,6 +3,7 @@ import { Head, usePage } from '@inertiajs/react';
 import { type PageProps } from '@/types';
 import { BreadcrumbItem } from '@/types';
 import { Link } from '@inertiajs/react';
+import { format } from 'date-fns';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Employee', href: '/employee' },
@@ -40,7 +41,7 @@ export default function EmployeeView() {
                     <p><strong>Address:</strong> {employee.address}</p>
                     <p><strong>Department:</strong> {employee.department}</p>
                     <p><strong>Position:</strong> {employee.position}</p>
-                    <p><strong>Date Hired:</strong> {employee.date_hired}</p>
+                    <p><strong>Date Hired:</strong> {format(new Date(employee.date_hired), 'MMMM d, yyyy')}</p>
                     <p><strong>Created At:</strong> {new Date(employee.created_at).toLocaleString()}</p>
                     <p><strong>Updated At:</strong> {new Date(employee.updated_at).toLocaleString()}</p>
 
