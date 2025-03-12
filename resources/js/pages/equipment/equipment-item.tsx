@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { ChevronsUpDown } from 'lucide-react';
-import { format } from 'date-fns';
 
 interface Equipment {
     id: number;
@@ -16,6 +15,39 @@ export default function EquipmentItem({ equipments }: { equipments: Equipment[] 
     const [sortColumn, setSortColumn] = useState<'description' | 'quantity' | 'status'>('description');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
+    // Grouping equipment by description
+    const groupedEquipments = equipments.reduce((acc, equipment) => {
+        const key = equipment.description;
+        if (!acc[key]) {
+            acc[key] = { description: key, totalQuantity: 0, availableCount: 0, totalCount: 0 };
+        }
+        acc[key].totalQuantity += parseInt(equipment.quantity, 10);
+        acc[key].totalCount += 1;
+        if (equipment.status.toLowerCase() === 'available') {
+            acc[key].availableCount += 1;
+        }
+        return acc;
+    }, {} as Record<string, { description: string; totalQuantity: number; availableCount: number; totalCount: number }>);
+
+    const sortedEquipments = Object.values(groupedEquipments).sort((a, b) => {
+        let aValue: string | number;
+        let bValue: string | number;
+    
+        if (sortColumn === 'quantity') {
+            aValue = a.totalQuantity;
+            bValue = b.totalQuantity;
+        } else if (sortColumn === 'status') {
+            aValue = a.availableCount / a.totalCount; // Sort by availability ratio
+            bValue = b.availableCount / b.totalCount;
+        } else {
+            aValue = a.description.toLowerCase();
+            bValue = b.description.toLowerCase();
+        }
+    
+        return sortOrder === 'asc' ? (aValue > bValue ? 1 : -1) : (aValue < bValue ? 1 : -1);
+    });
+    
+
     const toggleSort = (column: 'description' | 'quantity' | 'status') => {
         if (sortColumn === column) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
@@ -24,12 +56,6 @@ export default function EquipmentItem({ equipments }: { equipments: Equipment[] 
             setSortOrder('asc');
         }
     };
-
-    const sortedEquipments = [...equipments].sort((a, b) => {
-        const aValue = a[sortColumn].toString().toLowerCase();
-        const bValue = b[sortColumn].toString().toLowerCase();
-        return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-    });
 
     return (
         <AppLayout>
@@ -42,8 +68,8 @@ export default function EquipmentItem({ equipments }: { equipments: Equipment[] 
                             <tr className="bg-gray-100 dark:bg-gray-800">
                                 {[
                                     { key: 'description', label: 'Description' },
-                                    { key: 'quantity', label: 'Quantity' },
-                                    { key: 'status', label: 'Status' },
+                                    { key: 'quantity', label: 'Total Quantity' },
+                                    { key: 'status', label: 'Available/Total' },
                                 ].map(({ key, label }) => (
                                     <th
                                         key={key}
@@ -61,23 +87,20 @@ export default function EquipmentItem({ equipments }: { equipments: Equipment[] 
                         <tbody>
                             {sortedEquipments.length > 0 ? (
                                 sortedEquipments.map((equipment) => (
-                                    <tr key={equipment.id} className="border border-gray-300 dark:border-gray-700">
+                                    <tr key={equipment.description} className="border border-gray-300 dark:border-gray-700">
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.description}</td>
-                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.quantity}</td>
-                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.status}</td>
+                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.totalQuantity}</td>
+                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{`${equipment.availableCount}/${equipment.totalCount}`}</td>
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan={4} className="p-4 text-center">No equipment found.</td>
+                                    <td colSpan={3} className="p-4 text-center">No equipment found.</td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
                 </div>
-                <Link href="/equipment/inventory" className="mt-4 inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                    Back to Inventory
-                </Link>
             </div>
         </AppLayout>
     );
