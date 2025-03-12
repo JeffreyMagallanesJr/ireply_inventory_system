@@ -8,16 +8,15 @@ interface Equipment {
     id: number;
     item: string;
     description: string;
-    serial_number: string;
-    stored_date: string;
+    quantity: string;
     status: string;
 }
 
 export default function EquipmentItem({ equipments }: { equipments: Equipment[] }) {
-    const [sortColumn, setSortColumn] = useState<'description' | 'serial_number' | 'stored_date' | 'status'>('stored_date');
+    const [sortColumn, setSortColumn] = useState<'description' | 'quantity' | 'status'>('description');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-    const toggleSort = (column: 'description' | 'serial_number' | 'stored_date' | 'status') => {
+    const toggleSort = (column: 'description' | 'quantity' | 'status') => {
         if (sortColumn === column) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
         } else {
@@ -43,14 +42,13 @@ export default function EquipmentItem({ equipments }: { equipments: Equipment[] 
                             <tr className="bg-gray-100 dark:bg-gray-800">
                                 {[
                                     { key: 'description', label: 'Description' },
-                                    { key: 'serial_number', label: 'Serial Number' },
-                                    { key: 'stored_date', label: 'Stored Date' },
+                                    { key: 'quantity', label: 'Quantity' },
                                     { key: 'status', label: 'Status' },
                                 ].map(({ key, label }) => (
                                     <th
                                         key={key}
                                         className="border border-gray-300 dark:border-gray-700 p-2 cursor-pointer text-center"
-                                        onClick={() => toggleSort(key as 'description' | 'serial_number' | 'stored_date' | 'status')}
+                                        onClick={() => toggleSort(key as 'description' | 'quantity' | 'status')}
                                     >
                                         <div className="flex items-center justify-center gap-1">
                                             {label}
@@ -65,10 +63,7 @@ export default function EquipmentItem({ equipments }: { equipments: Equipment[] 
                                 sortedEquipments.map((equipment) => (
                                     <tr key={equipment.id} className="border border-gray-300 dark:border-gray-700">
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.description}</td>
-                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.serial_number}</td>
-                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                            {format(new Date(equipment.stored_date), 'MMMM d, yyyy')}
-                                        </td>
+                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.quantity}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.status}</td>
                                     </tr>
                                 ))
