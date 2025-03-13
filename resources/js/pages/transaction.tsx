@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
 
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Transactions',
-        href: '/transactions',
+        title: 'Transaction',
+        href: '/transaction',
     },
 ];
 
@@ -45,7 +46,27 @@ export default function Transactions({ transactions }: { transactions: Transacti
     const [searchTerm, setSearchTerm] = useState('');
     const [sortColumn, setSortColumn] = useState<string>('id');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-    const [selectedColumns, setSelectedColumns] = useState<string[]>(['id', 'user_id', 'employee_id', 'equipment_id', 'status']);
+    const [selectedColumns, setSelectedColumns] = useState<string[]>([
+        'id',         // Transaction ID
+        'approved_by', // User full name
+        'borrower_name', // Employee full name
+        'item', // Equipment item name
+        'status'
+    ]);
+
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setDropdownOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
 
     const { delete: destroy } = useForm();
 
@@ -91,10 +112,44 @@ export default function Transactions({ transactions }: { transactions: Transacti
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Transactions" />
             <div className="flex flex-col gap-4 rounded-xl p-4">
-                <div className="flex justify-between mb-4">
-                    <Link href="/transactions/create" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                        Add Transaction
-                    </Link>
+                <div className="flex justify-between items-center mb-4">
+                    {/* Add Transaction Button */}
+                    <div className="flex items-center gap-4">
+                        <Link 
+                            href="/transactions/create" 
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        >
+                            Add Transaction
+                        </Link>
+
+                        {/* Column Selection Dropdown */}
+                        <div className="relative inline-block" ref={dropdownRef}>
+                            <button 
+                                onClick={() => setDropdownOpen(!dropdownOpen)} 
+                                className="px-4 py-2 border rounded bg-gray-100 dark:bg-gray-800 flex items-center gap-2"
+                            >
+                                Select Columns
+                                <ChevronsUpDown className="w-4 h-4" />
+                            </button>
+
+                            {dropdownOpen && (
+                                <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-900 border rounded shadow-lg p-2 z-10">
+                                    {availableColumns.map(({ key, label }) => (
+                                        <label key={key} className="flex items-center space-x-2 p-1">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedColumns.includes(key)}
+                                                onChange={() => handleColumnSelection(key)}
+                                            />
+                                            <span>{label}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Search Input */}
                     <input
                         type="text"
                         placeholder="Search..."
@@ -102,23 +157,6 @@ export default function Transactions({ transactions }: { transactions: Transacti
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                </div>
-
-                {/* Column Selection */}
-                <div className="mb-4 p-2 border rounded bg-gray-100 dark:bg-gray-800">
-                    <p className="font-semibold mb-2">Select Columns:</p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                        {availableColumns.map(({ key, label }) => (
-                            <label key={key} className="flex items-center space-x-2">
-                                <input
-                                    type="checkbox"
-                                    checked={selectedColumns.includes(key)}
-                                    onChange={() => handleColumnSelection(key)}
-                                />
-                                <span>{label}</span>
-                            </label>
-                        ))}
-                    </div>
                 </div>
 
                 {/* Transactions Table */}
