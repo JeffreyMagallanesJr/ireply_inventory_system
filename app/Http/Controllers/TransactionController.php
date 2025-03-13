@@ -64,7 +64,7 @@ class TransactionController extends Controller
 
     public function show($id)
     {
-        $transaction = Transaction::with(['user', 'employee', 'equipment'])->findOrFail($id);
+        $transaction = Transaction::findOrFail($id);
 
         return Inertia::render('transaction/transaction-view', [
             'transaction' => $transaction

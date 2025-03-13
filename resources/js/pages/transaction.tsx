@@ -116,7 +116,7 @@ export default function Transactions({ transactions }: { transactions: Transacti
                     {/* Add Transaction Button */}
                     <div className="flex items-center gap-4">
                         <Link 
-                            href="/transactions/create" 
+                            href="/transaction/create" 
                             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
                             Add Transaction
@@ -193,10 +193,10 @@ export default function Transactions({ transactions }: { transactions: Transacti
                                                 </td>
                                             ))}
                                         <td className="border p-2 text-center">
-                                            <Link href={`/transactions/view/${transaction.id}`} className="px-2 py-1 text-blue-500 hover:underline">
+                                            <Link href={`/transaction/transaction-view/${transaction.id}`} className="px-2 py-1 text-blue-500 hover:underline">
                                                 View
                                             </Link>
-                                            <Link href={`/transactions/edit/${transaction.id}`} className="ml-2 px-2 py-1 text-green-500 hover:underline">
+                                            <Link href={`/transaction/transaction-edit/${transaction.id}`} className="ml-2 px-2 py-1 text-green-500 hover:underline">
                                                 Edit
                                             </Link>
                                             <button
