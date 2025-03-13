@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useForm } from "@inertiajs/react";
 import { DialogClose } from "@/components/ui/dialog";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 interface Employee {
     id_number: string;
@@ -8,6 +11,7 @@ interface Employee {
     last_name: string;
     contact_number: string;
     address: string,
+    email: string,
     department: string;
     position: string;
     date_hired: string;
@@ -19,6 +23,7 @@ export default function EmployeeEdit({ employee }: { employee: Employee }) {
         first_name: employee.first_name,
         last_name: employee.last_name,
         contact_number: employee.contact_number,
+        email: employee.email,
         address: employee.address,
         department: employee.department,
         position: employee.position,
@@ -32,9 +37,10 @@ export default function EmployeeEdit({ employee }: { employee: Employee }) {
             setData({
                 id_number: employee.id_number,
                 first_name: employee.first_name,
-                contact_number: employee.contact_number,
-                address: employee.address,
                 last_name: employee.last_name,
+                contact_number: employee.contact_number,
+                email: employee.email,
+                address: employee.address,
                 department: employee.department,
                 position: employee.position,
                 date_hired: employee.date_hired,
@@ -45,11 +51,20 @@ export default function EmployeeEdit({ employee }: { employee: Employee }) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-
+    
         put(route("employee.update", employee.id_number), {
             preserveScroll: true,
             onSuccess: () => {
-                alert("Employee updated successfully");
+                toast.success("Employee updated successfully!", {
+                    position: "top-right",
+                    autoClose: 3000, // Hide after 3 seconds
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored", // You can use "light", "dark", or "colored"
+                });
                 setIsSubmitting(false);
             },
             onError: () => setIsSubmitting(false),
@@ -69,6 +84,18 @@ export default function EmployeeEdit({ employee }: { employee: Employee }) {
                         required
                     />
                     {errors.first_name && <p className="text-red-500 text-sm">{errors.first_name}</p>}
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium">Last Name</label>
+                    <input
+                        type="text"
+                        value={data.last_name}
+                        onChange={(e) => setData("last_name", e.target.value)}
+                        className="w-full p-2 border rounded"
+                        required
+                    />
+                    {errors.last_name && <p className="text-red-500 text-sm">{errors.last_name}</p>}
                 </div>
 
                 <div>
@@ -92,15 +119,13 @@ export default function EmployeeEdit({ employee }: { employee: Employee }) {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium">Last Name</label>
+                    <label className="block text-sm font-medium">Email</label>
                     <input
                         type="text"
-                        value={data.last_name}
-                        onChange={(e) => setData("last_name", e.target.value)}
+                        value={data.email}
+                        onChange={(e) => setData("email", e.target.value)}
                         className="w-full p-2 border rounded"
-                        required
                     />
-                    {errors.last_name && <p className="text-red-500 text-sm">{errors.last_name}</p>}
                 </div>
 
                 <div>

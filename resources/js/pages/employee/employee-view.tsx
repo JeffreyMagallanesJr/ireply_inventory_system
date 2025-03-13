@@ -1,6 +1,8 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogTrigger } from "@/components/ui/dialog";
 import { format } from "date-fns";
 import { Link } from "@inertiajs/react";
+import EmployeeEdit from "./employee-edit";
+import { Edit } from "lucide-react";
 
 interface Employee {
     id_number: string;
@@ -38,14 +40,18 @@ export default function EmployeeView({ employee }: { employee: Employee }) {
                     >
                         Back
                     </Link>
-                    <Link 
-                        href={`/employee/employee-edit/${employee.id_number}`} 
-                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                    >
-                        Edit
-                    </Link>
+                    <Dialog>
+                         <DialogTrigger className="text-green-500 hover:text-green-700">
+                             <Edit className="w-5 h-5" />
+                                </DialogTrigger>
+                                    <DialogContent className="!max-w-4xl w-200">
+                                        <DialogTitle>Edit Employee</DialogTitle>
+                                     <EmployeeEdit employee={employee} />
+                         </DialogContent>
+                    </Dialog>
                 </div>
             </DialogContent>
+
         </Dialog>
     );
 }

@@ -146,7 +146,7 @@ function Sidebar({
   side = "left",
   variant = "sidebar",
   collapsible = "offcanvas",
-  className = "",
+  className = "bg-gradient-to-b from-white to-sky-500",
   children,
   ...props
 }: React.ComponentProps<"div"> & {
@@ -162,7 +162,7 @@ function Sidebar({
         data-slot="sidebar"
         className={cn(
           "flex h-full w-[--sidebar-width] flex-col",
-          "flex h-full w-[--sidebar-width] flex-col bg-gradient-to-b from-white to-[#6b9bd1] dark:bg-[#YourDarkHexCode] text-sidebar-foreground",
+          "flex h-full w-[--sidebar-width] flex-col bg-gradient-to-b from-white to-sky-500 dark:from-gray-800 dark:to-gray-900 text-sidebar-foreground",
           className
         )}
         {...props}
@@ -344,7 +344,7 @@ function SidebarFooter({ className, ...props }: React.ComponentProps<"div">) {
       data-sidebar="footer"
       className={cn(
         "flex flex-col gap-2 p-2",
-        "bg-gray-100 dark:bg-gray-800",
+        "bg-gradient-to-b from-white to-sky-500 dark:to-gray-900",
          // Rounded with spacing
         className
       )}
@@ -376,6 +376,7 @@ function SidebarContent({ className, ...props }: React.ComponentProps<"div">) {
       data-sidebar="content"
       className={cn(
         "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+        "bg-gradient-to-b from-white to-sky-500",
         className
       )}
       {...props}
