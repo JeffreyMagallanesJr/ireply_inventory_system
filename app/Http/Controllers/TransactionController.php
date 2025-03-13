@@ -9,35 +9,42 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\Equipment;
-use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
     public function index(): Response
     {
-        $transactions = Transaction::with(['user', 'employee', 'equipment'])->get(); // Fetch transactions with related data
-        
+        $transactions = Transaction::with(['user', 'employee', 'equipment'])->get();
+
         return Inertia::render('transaction', [
-            'transactions' => $transactions,
+            'transactions' => $transactions->map(function ($transaction) {
+                return [
+                    'id' => $transaction->id,
+                    'approved_by' => $transaction->user ? $transaction->user->first_name . ' ' . $transaction->user->last_name : 'N/A',
+                    'borrower_name' => $transaction->employee ? $transaction->employee->first_name . ' ' . $transaction->employee->last_name : 'N/A',
+                    'item' => $transaction->equipment ? $transaction->equipment->item : 'N/A',
+                    'status' => $transaction->status,
+                    'release_mode' => $transaction->release_mode,
+                    'release_state' => $transaction->release_state,
+                    'release_date' => $transaction->release_date,
+                    'return_state' => $transaction->return_state,
+                    'return_date' => $transaction->return_date,
+                ];
+            }),
         ]);
     }
 
     public function create(): Response
     {
-        $users = User::all();
-        $employees = Employee::all();
-        $equipments = Equipment::all();
-
         return Inertia::render('transaction/transaction-form', [
-            'users' => $users,
-            'employees' => $employees,
-            'equipments' => $equipments,
+            'users' => User::select('id', 'first_name', 'last_name')->get(),
+            'employees' => Employee::select('id', 'first_name', 'last_name')->get(),
+            'equipments' => Equipment::select('id', 'item')->get(),
         ]);
     }
 
     public function store(Request $request)
     {
-        // Validate input
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'employee_id' => 'required|exists:employees,id',
@@ -50,7 +57,6 @@ class TransactionController extends Controller
             'return_date' => 'nullable|date|after_or_equal:release_date',
         ]);
 
-        // Store transaction in the database
         Transaction::create($validated);
 
         return redirect()->route('transaction')->with('success', 'Transaction added successfully!');
@@ -58,11 +64,7 @@ class TransactionController extends Controller
 
     public function show($id)
     {
-        $transaction = Transaction::with(['user', 'employee', 'equipment'])->find($id);
-
-        if (!$transaction) {
-            abort(404, 'Transaction not found');
-        }
+        $transaction = Transaction::with(['user', 'employee', 'equipment'])->findOrFail($id);
 
         return Inertia::render('transaction/transaction-view', [
             'transaction' => $transaction
@@ -71,32 +73,20 @@ class TransactionController extends Controller
 
     public function edit($id)
     {
-        $transaction = Transaction::find($id);
-
-        if (!$transaction) {
-            abort(404, 'Transaction not found');
-        }
-
-        $users = User::all();
-        $employees = Employee::all();
-        $equipments = Equipment::all();
+        $transaction = Transaction::findOrFail($id);
 
         return Inertia::render('transaction/transaction-edit', [
             'transaction' => $transaction,
-            'users' => $users,
-            'employees' => $employees,
-            'equipments' => $equipments,
+            'users' => User::select('id', 'first_name', 'last_name')->get(),
+            'employees' => Employee::select('id', 'first_name', 'last_name')->get(),
+            'equipments' => Equipment::select('id', 'item')->get(),
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        $transaction = Transaction::find($id);
-        if (!$transaction) {
-            return response()->json(['message' => 'Transaction not found'], 404);
-        }
+        $transaction = Transaction::findOrFail($id);
 
-        // Validate input
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'employee_id' => 'required|exists:employees,id',
@@ -109,7 +99,6 @@ class TransactionController extends Controller
             'return_date' => 'nullable|date|after_or_equal:release_date',
         ]);
 
-        // Update transaction
         $transaction->update($validated);
 
         return redirect()->route('transaction')->with('success', 'Transaction updated successfully');
@@ -117,14 +106,9 @@ class TransactionController extends Controller
 
     public function destroy($id)
     {
-        $transaction = Transaction::find($id);
-
-        if (!$transaction) {
-            return response()->json(['message' => 'Transaction not found'], 404);
-        }
-
+        $transaction = Transaction::findOrFail($id);
         $transaction->delete();
 
-        return redirect()->route('transactions')->with('success', 'Transaction deleted successfully');
+        return redirect()->route('transaction')->with('success', 'Transaction deleted successfully');
     }
 }

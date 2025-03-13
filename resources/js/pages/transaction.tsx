@@ -14,9 +14,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface Transaction {
     id: number;
-    user_id: number;
-    employee_id: number;
-    equipment_id: number;
+    approved_by: string; // Changed from user_id
+    borrower_name: string; // Changed from employee_id
+    item: string; // Changed from equipment_id
     status: 'released' | 'returned' | 'lost';
     release_mode: 'on_site' | 'take_home';
     release_state: 'good_condition' | 'brand_new' | 'damaged';
@@ -25,12 +25,13 @@ interface Transaction {
     return_date: string;
 }
 
+
 // Define all available columns
 const availableColumns = [
     { key: 'id', label: 'Transaction ID' },
-    { key: 'user_id', label: 'User ID' },
-    { key: 'employee_id', label: 'Employee ID' },
-    { key: 'equipment_id', label: 'Equipment ID' },
+    { key: 'approved_by', label: 'Approved By' }, // Full name of the user
+    { key: 'borrower_name', label: 'Borrower Name' }, // Full name of the employee
+    { key: 'item', label: 'Item' }, // Equipment item name
     { key: 'status', label: 'Status' },
     { key: 'release_mode', label: 'Release Mode' },
     { key: 'release_state', label: 'Release State' },
@@ -38,6 +39,7 @@ const availableColumns = [
     { key: 'return_state', label: 'Return State' },
     { key: 'return_date', label: 'Return Date' },
 ];
+
 
 export default function Transactions({ transactions }: { transactions: Transaction[] }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -58,14 +60,17 @@ export default function Transactions({ transactions }: { transactions: Transacti
     };
 
     const sortedTransactions = [...transactions]
-        .filter(transaction =>
-            Object.values(transaction).some(value => value.toString().toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter(transaction =>
+        Object.values(transaction).some(value =>
+            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
         )
-        .sort((a, b) => {
-            const aValue = a[sortColumn as keyof Transaction].toString().toLowerCase();
-            const bValue = b[sortColumn as keyof Transaction].toString().toLowerCase();
-            return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
-        });
+    )
+    .sort((a, b) => {
+        const aValue = a[sortColumn as keyof Transaction]?.toString().toLowerCase() || '';
+        const bValue = b[sortColumn as keyof Transaction]?.toString().toLowerCase() || '';
+        return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    });
+
 
     const toggleSort = (column: string) => {
         if (sortColumn === column) {
