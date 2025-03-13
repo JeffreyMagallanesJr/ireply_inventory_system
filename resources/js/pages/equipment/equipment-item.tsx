@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
+import { type BreadcrumbItem } from '@/types';
 import { ChevronsUpDown } from 'lucide-react';
 
 interface Equipment {
@@ -57,8 +58,23 @@ export default function EquipmentItem({ equipments }: { equipments: Equipment[] 
         }
     };
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Equipment',
+            href: '/equipment/inventory',
+        },
+        {
+            title: 'Inventory',
+            href: '/equipment/inventory',
+        },
+        {
+            title: `${equipments[0]?.item}`,
+            href: `/equipment/${equipments[0]?.item}`,
+        },
+    ];
+
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Equipment - ${equipments[0]?.item}`} />
             <div className="p-6 bg-white dark:bg-gray-900 rounded-lg shadow">
                 <h1 className="text-2xl font-bold mb-4">{equipments[0]?.item}</h1>
