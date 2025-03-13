@@ -5,6 +5,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
 import { format } from 'date-fns';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,21 +31,26 @@ interface Equipment {
 export default function Equipment({ equipments }: { equipments: Equipment[] }) {
     const searchParams = new URLSearchParams(window.location.search);
     const url = searchParams.get('search');
-    console.log(url);
     const [searchTerm, setSearchTerm] = useState(url || '');
     const [sortColumn, setSortColumn] = useState<'item' | 'description' | 'serial_number' | 'stored_date' | 'status'>('item');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+    const [deleteSuccessOpen, setDeleteSuccessOpen] = useState(false);
+    const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
 
     const { delete: destroy } = useForm();
 
-    const handleDelete = (id: number) => {
-        if (confirm('Are you sure you want to delete this equipment?')) {
-            destroy(route('equipment.destroy', id), {
-                preserveScroll: true,
-                onSuccess: () => alert('Equipment deleted successfully'),
-                onError: (errors) => alert(errors.message),
-            });
-        }
+    const handleDelete = () => {
+        if (!selectedEquipment) return;
+
+        destroy(route('equipment.destroy', selectedEquipment.id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                setDeleteConfirmOpen(false);
+                setDeleteSuccessOpen(true);
+            },
+            onError: (errors) => alert(errors.message),
+        });
     };
 
     const sortedEquipments = [...equipments]
@@ -130,12 +136,38 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                                                 Edit
                                             </Link>
 
-                                            <button
+                                            <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+                                                <DialogTrigger asChild>
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedEquipment(equipment);
+                                                            setDeleteConfirmOpen(true);
+                                                        }}
+                                                        className="text-red-500 hover:underline"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </DialogTrigger>
+                                                <DialogContent>
+                                                    <DialogTitle>Are you sure?</DialogTitle>
+                                                    <DialogDescription>
+                                                        This action cannot be undone. Do you want to proceed?
+                                                    </DialogDescription>
+                                                    <DialogFooter>
+                                                        <button onClick={handleDelete} className="text-red-500 hover:underline">Confirm Delete</button>
+                                                        <DialogClose asChild>
+                                                            <button className="text-gray-500 hover:underline">Cancel</button>
+                                                        </DialogClose>
+                                                    </DialogFooter>
+                                                </DialogContent>
+                                            </Dialog>
+
+                                            {/* <button
                                                 onClick={() => handleDelete(equipment.id)}
                                                 className="ml-2 px-2 py-1 text-red-500 hover:underline"
                                             >
                                                 Delete
-                                            </button>
+                                            </button> */}
                                         </td>
                                     </tr>
                                 ))
@@ -148,6 +180,17 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                     </table>
                 </div>
             </div>
+            <Dialog open={deleteSuccessOpen} onOpenChange={setDeleteSuccessOpen}>
+                <DialogContent>
+                    <DialogTitle>Item Deleted</DialogTitle>
+                    <DialogDescription>The item has been successfully deleted.</DialogDescription>
+                    <DialogFooter>
+                        <DialogClose asChild>
+                            <button className="text-blue-500 hover:underline">OK</button>
+                        </DialogClose>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </AppLayout>
     );
 }
