@@ -39,7 +39,14 @@ class TransactionController extends Controller
     {
         $users = User::select('id', 'first_name', 'last_name')->get();
         $employees = Employee::select('id', 'first_name', 'last_name')->get();
-        $equipments = Equipment::select('id', 'item')->get();
+
+        // Fetch only equipment where status is 'returned' or NULL
+        $equipments = Equipment::whereNotIn('id', function ($query) {
+            $query->select('equipment_id')
+                ->from('transactions')
+                ->whereNotNull('status')
+                ->where('status', '!=', 'returned'); // Exclude equipment that is not returned
+        })->select('id', 'item')->get();
 
         // Fetch enum values
         $statusEnum = $this->getEnumValues('transactions', 'status');
