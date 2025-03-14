@@ -108,7 +108,7 @@ export default function EmployeeForm() {
     return (
         <>
             <Head title="Add Employee" />
-            <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-900">
+            <div className="">
                 <h2 className="text-2xl font-semibold mb-4"></h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
