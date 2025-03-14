@@ -184,7 +184,7 @@ class TransactionController extends Controller
 
     
 
-    /* public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $transaction = Transaction::findOrFail($id);
 
@@ -211,5 +211,5 @@ class TransactionController extends Controller
         $transaction->delete();
 
         return redirect()->route('transaction')->with('success', 'Transaction deleted successfully');
-    } */
+    } 
 }
