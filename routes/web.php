@@ -1,18 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EquipmentController;
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard'); // Redirect authenticated users to the dashboard
+    }
     return Inertia::render('auth/login');
 })->name('home');
 
+
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
+    Route::get('/dashboard', function () {
         return Inertia::render('dashboard', [
-            'user' => Auth::user(), // 👈 Pass the authenticated user
+            'user' => Auth::user(),
         ]);
     })->name('dashboard');
 
@@ -26,13 +31,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/employee/{id}', [EmployeeController::class, 'destroy'])->name('employee.destroy');
 
     // Equipment Routes
-    Route::get('/equipment', [EquipmentController::class, 'index'])->name('equipment.index');
+    Route::redirect('/equipment', '/equipment/items');
+    Route::get('/equipment/items', [EquipmentController::class, 'index'])->name('equipment.index');
+    Route::get('/equipment/inventory', [EquipmentController::class, 'inventory'])->name('equipment.inventory');
     Route::get('/equipment/equipment-form', [EquipmentController::class, 'create'])->name('equipment.create');
-    Route::post('/equipment', [EquipmentController::class, 'store'])->name('equipment.store');
+    Route::post('/equipment/items', [EquipmentController::class, 'store'])->name('equipment.store');
     Route::get('/equipment/equipment-view/{id}', [EquipmentController::class, 'show'])->name('equipment.show');
     Route::get('/equipment/equipment-edit/{id}', [EquipmentController::class, 'edit'])->name('equipment.edit');
     Route::put('/equipment/update/{id}', [EquipmentController::class, 'update'])->name('equipment.update');
     Route::delete('/equipment/{id}', [EquipmentController::class, 'destroy'])->name('equipment.destroy');
+
+    Route::get('/equipment/items/{item}', [EquipmentController::class, 'showByItem'])->name('equipment.showByItem');
+
+    // Route::redirect('/equipment/items/{item.name}', function() {
+        
+    // })
+
+    // Route::get('/equipment/inventory', function() {
+    //     return 'Welcome to inventory page.';
+    // });
 });
 
 require __DIR__.'/settings.php';

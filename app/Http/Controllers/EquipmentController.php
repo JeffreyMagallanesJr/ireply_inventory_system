@@ -18,6 +18,14 @@ class EquipmentController extends Controller
         ]);
     }
 
+    public function inventory(): Response
+    {
+        $equipments = Equipment::all(); // Fetch all equipment from the database
+        return Inertia::render('equipment/equipment-inventory', [
+            'equipments' => $equipments,
+        ]);
+    }
+
     public function create(): Response
     {
         return Inertia::render('equipment/equipment-form');
@@ -28,17 +36,18 @@ class EquipmentController extends Controller
         // Validate input
         $validated = $request->validate([
             'item' => 'required|string|max:255',
+            'specs' => 'nullable|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|unique:equipments,serial_number',
             'stored_date' => 'required|date',
             'status' => 'required|in:available,unavailable',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'nullable|integer|min:1',
         ]);
 
         // Store data in the database
         Equipment::create($validated);
 
-        return redirect('/equipment')->with('success', 'Equipment added successfully!');
+        return redirect('/equipment/items')->with('success', 'Equipment added successfully!');
     }
 
     public function show($id)
@@ -61,6 +70,21 @@ class EquipmentController extends Controller
             'equipment' => $equipment
         ]);
     }
+
+    public function showByItem($item)
+    {
+        $decodedItem = urldecode($item); // Decode URL for spaces/special characters
+        $equipments = Equipment::where('item', $decodedItem)->get(); // Get all matching items
+
+        if ($equipments->isEmpty()) {
+            abort(404, 'Equipment not found');
+        }
+
+        return Inertia::render('equipment/equipment-item', [
+            'equipments' => $equipments
+        ]);
+    }
+
 
     public function edit($id)
     {
@@ -93,11 +117,12 @@ class EquipmentController extends Controller
         // Validate request
         $validated = $request->validate([
             'item' => 'required|string|max:255',
+            'specs' => 'nullable|string',
             'description' => 'nullable|string',
             'serial_number' => 'required|string|unique:equipments,serial_number,' . $id,
             'stored_date' => 'required|date',
             'status' => 'required|in:available,unavailable',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'nullable|integer|min:1',
         ]);
 
         // Find equipment by ID

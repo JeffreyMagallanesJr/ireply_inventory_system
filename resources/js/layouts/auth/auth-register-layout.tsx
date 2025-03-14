@@ -15,17 +15,11 @@ export default function AuthSimpleLayout({ children, title, description }: Props
                 background: 'linear-gradient(299.62deg, #213D84 -15.18%, #1F62B1 21.49%, #FFFFFF 65.56%)',
             }}
         >
-            <div className="flex w-full max-w-7xl items-center justify-between">
-                {/* Left Section - Logo & Branding */}
-                <div className="flex flex-col items-start text-left space-y-4 w-1/2">
-                    <Link href={route('home')} className="flex items-center gap-3">
-                        <AppLogoIcon className="" />
-                        <span className="text-5xl font-bold text-gray-900"></span>
-                    </Link>
-                </div>
+            <div className="">
+            
 
                 {/* Right Section - Login Form */}
-                <div className="bg-white p-7 rounded-lg shadow-2xl shadow-gray-800/50">
+                <div className="bg-white p-7 rounded-lg shadow-x3">
                     <div className="space-y-2 text-center">
                         <h1 className="text-2xl font-semibold text-black">{title}</h1>
                         {description && <p className="text-sm text-gray-600">{description}</p>}

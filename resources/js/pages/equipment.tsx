@@ -4,25 +4,35 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { ChevronsUpDown } from 'lucide-react';
+import { format } from 'date-fns';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Equipment',
-        href: '/equipment',
+        href: '/equipment/items',
+    },
+    {
+        title: 'Items',
+        href: '/equipment/items',
     },
 ];
+
 
 interface Equipment {
     id: number;
     item: string;
+    description: string;
     serial_number: string;
-    quantity: number;
+    stored_date: string;
     status: string;
 }
 
 export default function Equipment({ equipments }: { equipments: Equipment[] }) {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [sortColumn, setSortColumn] = useState<'item' | 'serial_number' | 'quantity' | 'status'>('item');
+    const searchParams = new URLSearchParams(window.location.search);
+    const url = searchParams.get('search');
+    console.log(url);
+    const [searchTerm, setSearchTerm] = useState(url || '');
+    const [sortColumn, setSortColumn] = useState<'item' | 'description' | 'serial_number' | 'stored_date' | 'status'>('item');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     const { delete: destroy } = useForm();
@@ -49,7 +59,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
             return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
         });
 
-    const toggleSort = (column: 'item' | 'serial_number' | 'quantity' | 'status') => {
+        const toggleSort = (column: 'item' | 'description' | 'serial_number' | 'stored_date' | 'status') => {
         if (sortColumn === column) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
         } else {
@@ -81,13 +91,13 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                                 {[
                                     { key: 'item', label: 'Item Name' },
                                     { key: 'serial_number', label: 'Serial Number' },
-                                    { key: 'quantity', label: 'Quantity' },
+                                    { key: 'stored_date', label: 'Stored Date' },
                                     { key: 'status', label: 'Status' },
                                 ].map(({ key, label }) => (
                                     <th
                                         key={key}
                                         className="border border-gray-300 dark:border-gray-700 p-2 cursor-pointer text-center"
-                                        onClick={() => toggleSort(key as 'item' | 'serial_number' | 'quantity' | 'status')}
+                                        onClick={() => toggleSort(key as 'item' | 'description' | 'serial_number' | 'stored_date' | 'status')}
                                     >
                                         <div className="flex items-center justify-center gap-1">
                                             {label}
@@ -105,7 +115,7 @@ export default function Equipment({ equipments }: { equipments: Equipment[] }) {
                                     <tr key={equipment.id} className="border border-gray-300 dark:border-gray-700">
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.item}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.serial_number}</td>
-                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.quantity}</td>
+                                        <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{format(new Date(equipment.stored_date), 'MMMM d, yyyy')}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{equipment.status}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
                                             <Link

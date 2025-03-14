@@ -1,10 +1,17 @@
+
 import { useState } from 'react';
 import { useForm } from '@inertiajs/react'; // Import useForm
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { ChevronsUpDown } from 'lucide-react';
+import { ChevronsUpDown , Trash2, Edit, Eye} from 'lucide-react';
+import EmployeeForm from './employee/employee-form';
+import EmployeeView from './employee/employee-view';
+import EmployeeEdit from './employee/employee-edit';
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,27 +23,44 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface Employee {
     id_number: string;
     first_name: string;
-    middle_name?: string;
     last_name: string;
+    email: string;
+    contact_number: string;
+    address: string;
     department: string;
     position: string;
+    date_hired: string;
 }
 
 export default function Employee({ employees }: { employees: Employee[] }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortColumn, setSortColumn] = useState<'id_number' | 'last_name' | 'department' | 'position'>('id_number');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const { delete: destroy } = useForm(); // Inertia's delete function
 
     // Function to handle employee deletion
-    const handleDelete = (id: string) => {
-        if (confirm('Are you sure you want to delete this employee?')) {
-            destroy(route('employee.destroy', id), {
-                preserveScroll: true,
-                onSuccess: () => alert('Employee deleted successfully'),
-                onError: (errors) => alert(errors.message),
+    const handleDelete = () => {
+        if (selectedEmployee) {
+            destroy(route("employee.destroy", selectedEmployee.id_number), {
+                onSuccess: () => toast.error("Employee deleted successfully!", { 
+                    style: { backgroundColor: "#dc2626", color: "white" } // Explicit red background
+                }),
+                onError: () => toast.error("Failed to delete employee.", { 
+                    style: { backgroundColor: "#dc2626", color: "white" } 
+                }),
             });
+        }
+        setIsDeleteModalOpen(false);
+    };
+
+    const handleAddEmployee = (newEmployee: Employee) => {
+        if (newEmployee) {
+            toast.success(`${newEmployee.first_name} ${newEmployee.last_name} has been successfully added.`);
+        } else {
+            toast.error("Failed to add employee.");
         }
     };
 
@@ -65,11 +89,25 @@ export default function Employee({ employees }: { employees: Employee[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Employee" />
+            <ToastContainer position="top-center"
+            autoClose={3000} 
+            hideProgressBar 
+            newestOnTop 
+            closeOnClick 
+            rtl={false} 
+            pauseOnFocusLoss 
+            draggable 
+            pauseOnHover 
+            theme="colored" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex justify-between mb-4">
-                    <Link href="/employee/employee-form" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                        Add Employee
-                    </Link>
+                <Dialog>
+                        <DialogTrigger className="px-4 py-2 bg-blue-500 text-white rounded">Add Employee</DialogTrigger>
+                        <DialogContent>
+                            <DialogTitle>Add Employee</DialogTitle>
+                            <EmployeeForm></EmployeeForm>
+                                </DialogContent>
+                    </Dialog>
                     <input
                         type="text"
                         placeholder="Search..."
@@ -87,6 +125,7 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                                     { key: 'last_name', label: 'Name' },
                                     { key: 'department', label: 'Department' },
                                     { key: 'position', label: 'Position' },
+                                    { key: 'date_hired', label: 'Date Hired' },
                                 ].map(({ key, label }) => (
                                     <th
                                         key={key}
@@ -109,27 +148,51 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                                     <tr key={employee.id_number} className="border border-gray-300 dark:border-gray-700">
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{employee.id_number}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                            {employee.last_name}, {employee.first_name} {employee.middle_name || ''}
+                                            {employee.last_name}, {employee.first_name}
                                         </td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{employee.department}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{employee.position}</td>
+                                        <td className="p-2 text-center">
+                                            {new Date(employee.date_hired).toLocaleDateString('en-US', {
+                                                year: 'numeric', month: 'long', day: 'numeric'
+                                            })}
+                                        </td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                            <Link
-                                                href={`/employee/employee-view/${employee.id_number}`}
-                                                className="px-2 py-1 text-blue-500 hover:underline"
-                                            >
-                                                View
-                                            </Link>
-                                            <Link href={`/employee/employee-edit/${employee.id_number}`} className="ml-2 px-2 py-1 text-green-500 hover:underline">
-                                                Edit
-                                            </Link>
+                                        <Dialog>
+                                            <DialogTrigger className="text-blue-500"><Eye className="w-5 h-5" /></DialogTrigger>
+                                            <DialogContent>
+                                                <DialogTitle>View</DialogTitle>
+                                                <EmployeeView employee={employee} />
+                                            </DialogContent>
+                                        </Dialog>
+                                            <Dialog>
+                                            <DialogTrigger className="text-green-500"><Edit className="w-5 h-5" /></DialogTrigger>
+                                            <DialogContent>
+                                                <DialogTitle>Edit Employee</DialogTitle>
+                                                <EmployeeEdit employee={employee} />
+                                            </DialogContent>
+                                        </Dialog>
 
-                                            <button
-                                                onClick={() => handleDelete(employee.id_number)}
-                                                className="ml-2 px-2 py-1 text-red-500 hover:underline"
+                                            <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+                                            <DialogTrigger
+                                                className="text-red-500"
+                                                onClick={() => {
+                                                    setSelectedEmployee(employee);
+                                                    setIsDeleteModalOpen(true);
+                                                }}
                                             >
-                                                Delete
-                                            </button>
+                                                <Trash2 className="w-5 h-5" />
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <DialogTitle>Confirm Deletion</DialogTitle>
+                                                <DialogDescription>
+                                                    Are you sure you want to delete {employee.first_name} {employee.last_name}?
+                                                </DialogDescription>
+                                                <button onClick={handleDelete} className="px-4 py-2 bg-red-500 text-white rounded">
+                                                    Confirm Delete
+                                                </button>
+                                            </DialogContent>
+                                        </Dialog>
                                         </td>
                                     </tr>
                                 ))

@@ -15,12 +15,13 @@ class EquipmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'item' => $this->faker->word(),
+            'item' => $this->faker->randomElement(['Laptop', 'Mouse', 'Keyboard']),
+            'specs' => $this->faker->word() . ': ' . $this->faker->words(3, true),
             'description' => $this->faker->sentence(),
             'serial_number' => $this->faker->unique()->bothify('SN-#####'),
             'stored_date' => $this->faker->date(),
             'status' => $this->faker->randomElement(['Available', 'Unavailable']),
-            'quantity' => $this->faker->numberBetween(1, 50),
+            'quantity' => '1',
         ];
     }
 }

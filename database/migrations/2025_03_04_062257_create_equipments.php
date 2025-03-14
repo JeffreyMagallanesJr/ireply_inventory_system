@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('equipments', function (Blueprint $table) {
             $table->id(); // Automatically creates an 'id' column as primary key
             $table->string('item');
+            $table->text('specs');
             $table->text('description');
             $table->string('serial_number')->unique(); // Ensures serial numbers are unique
             $table->date('stored_date');

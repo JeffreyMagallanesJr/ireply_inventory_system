@@ -4,15 +4,16 @@ import { type BreadcrumbItem } from "@/types";
 import { Head, router } from "@inertiajs/react";
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: "Equipment", href: "/equipment" },
+    { title: "Equipment", href: "/equipment/items" },
     { title: "Add Equipment", href: "/equipment/add" },
 ];
 
 export default function EquipmentForm() {
     const [formData, setFormData] = useState({
         item: "",
+        specs: "",
+        description: "",
         serial_number: "",
-        quantity: "",
         status: "available",
         stored_date: "",
     });
@@ -39,7 +40,7 @@ export default function EquipmentForm() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (validateForm()) {
-            router.post('/equipment', formData, {
+            router.post('/equipment/items', formData, {
                 onSuccess: () => console.log("Equipment added successfully!"),
                 onError: (errors) => setErrors(errors),
             });
@@ -65,6 +66,32 @@ export default function EquipmentForm() {
                         {errors.item && <p className="text-red-500 text-sm">{errors.item}</p>}
                     </div>
 
+                    {/* Specs */}
+                    <div>
+                        <label className="block text-gray-700 dark:text-gray-300">Specs</label>
+                        <input
+                            type="text"
+                            name="specs"
+                            value={formData.specs}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded"
+                        />
+                        {errors.specs && <p className="text-red-500 text-sm">{errors.specs}</p>}
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                        <label className="block text-gray-700 dark:text-gray-300">Description</label>
+                        <input
+                            type="text"
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border rounded"
+                        />
+                        {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+                    </div>
+
                     {/* Serial Number */}
                     <div>
                         <label className="block text-gray-700 dark:text-gray-300">Serial Number</label>
@@ -78,20 +105,8 @@ export default function EquipmentForm() {
                         {errors.serial_number && <p className="text-red-500 text-sm">{errors.serial_number}</p>}
                     </div>
 
-                    {/* Quantity & Status */}
+                    {/* Status */}
                     <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-gray-700 dark:text-gray-300">Quantity</label>
-                            <input
-                                type="number"
-                                name="quantity"
-                                value={formData.quantity}
-                                onChange={handleChange}
-                                className="w-full px-3 py-2 border rounded"
-                            />
-                            {errors.quantity && <p className="text-red-500 text-sm">{errors.quantity}</p>}
-                        </div>
-
                         <div>
                             <label className="block text-gray-700 dark:text-gray-300">Status</label>
                             <select
