@@ -21,6 +21,8 @@ interface Transaction {
 }
 
 export default function TransactionView({ transaction }: { transaction: Transaction }) {
+    console.log('Transaction Data:', transaction);
+    
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Transaction #${transaction.id}`} />
@@ -36,17 +38,23 @@ export default function TransactionView({ transaction }: { transaction: Transact
 
                     <div>
                         <p className="text-gray-600 dark:text-gray-300">Approved By:</p>
-                        <p className="text-lg font-semibold">{transaction.approved_by}</p>
+                        <p className="text-lg font-semibold">
+                            {transaction.approved_by ? `${transaction.approved_by.first_name} ${transaction.approved_by.last_name}` : 'N/A'}
+                        </p>
                     </div>
 
                     <div>
                         <p className="text-gray-600 dark:text-gray-300">Borrower Name:</p>
-                        <p className="text-lg font-semibold">{transaction.borrower_name}</p>
+                        <p className="text-lg font-semibold">
+                            {transaction.borrower_name ? `${transaction.borrower_name.first_name} ${transaction.borrower_name.last_name}` : 'N/A'}
+                        </p>
                     </div>
 
                     <div>
                         <p className="text-gray-600 dark:text-gray-300">Item:</p>
-                        <p className="text-lg font-semibold">{transaction.item}</p>
+                        <p className="text-lg font-semibold">
+                            {transaction.item ? transaction.item.name : 'N/A'}
+                        </p>
                     </div>
 
                     <div>

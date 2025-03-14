@@ -47,11 +47,14 @@ export default function Transactions({ transactions }: { transactions: Transacti
     const [sortColumn, setSortColumn] = useState<string>('id');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
     const [selectedColumns, setSelectedColumns] = useState<string[]>([
-        'id',         // Transaction ID
-        'approved_by', // User full name
+        //'id',         // Transaction ID
+        //'approved_by', // User full name
         'borrower_name', // Employee full name
         'item', // Equipment item name
-        'status'
+        //description
+        //serial number
+        'status',
+        'release_date'
     ]);
 
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -116,7 +119,7 @@ export default function Transactions({ transactions }: { transactions: Transacti
                     {/* Add Transaction Button */}
                     <div className="flex items-center gap-4">
                         <Link 
-                            href="/transaction/create" 
+                            href="/transaction/transaction-form" 
                             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                         >
                             Add Transaction
