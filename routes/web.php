@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -50,6 +51,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('/equipment/inventory', function() {
     //     return 'Welcome to inventory page.';
     // });
+
+    // Transaction Routes
+    Route::resource('transaction', TransactionController::class);
+    //Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+    Route::get('/transaction/transaction-form', [TransactionController::class, 'create'])->name('transaction.create');
+    Route::post('/transaction', [TransactionController::class, 'store'])->name('transaction.store');
+    Route::get('/transaction/transaction-view/{id}', [TransactionController::class, 'show'])
+    ->name('transaction.show');
+    Route::get('/transaction/transaction-edit/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');
+
+    
+    
+
 });
 
 require __DIR__.'/settings.php';

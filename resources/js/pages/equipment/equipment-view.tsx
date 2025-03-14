@@ -1,47 +1,50 @@
-import AppLayout from '@/layouts/app-layout';
-import { Head, usePage } from '@inertiajs/react';
-import { type PageProps } from '@/types';
-import { BreadcrumbItem } from '@/types';
-import { Link } from '@inertiajs/react';
 import { format } from 'date-fns';
+import { Link } from '@inertiajs/react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Equipment', href: '/equipment/items' },
-    { title: 'View Equipment', href: '#' },
-];
-
-interface Equipment {
+interface Transaction {
     id: number;
+    approved_by: string;
+    borrower_name: string;
     item: string;
-    serial_number: string;
-    specs: string;
-    description: string;
-    status: string;
-    stored_date: string;
+    status: 'released' | 'returned' | 'lost';
+    release_mode: 'on_site' | 'take_home';
+    release_state: 'good_condition' | 'brand_new' | 'damaged';
+    release_date: string;
+    return_state: 'good_condition' | 'brand_new' | 'damaged';
+    return_date: string | null;
 }
 
-export default function EquipmentView() {
-    const { props } = usePage<PageProps<{ equipment: Equipment }>>();
-    const equipment = props.equipment;
+interface TransactionViewProps {
+    transaction: Transaction;
+    onClose: () => void;
+}
 
+export default function TransactionView({ transaction, onClose }: TransactionViewProps) {
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="View Equipment" />
-            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-900 p-6 rounded-lg shadow">
-                <h2 className="text-2xl font-semibold mb-4">Equipment Details</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg max-w-lg w-full">
+                <h2 className="text-2xl font-semibold mb-4">Transaction Details</h2>
                 <div className="space-y-2">
-                    <p><strong>Item Name:</strong> {equipment.item}</p>
-                    <p><strong>Serial Number:</strong> {equipment.serial_number}</p>
-                    <p><strong>Specs:</strong> {equipment.specs}</p>
-                    <p><strong>Description:</strong> {equipment.description}</p>
-                    <p><strong>Status:</strong> {equipment.status}</p>
-                    <p><strong>Stored Date:</strong> {format(new Date(equipment.stored_date), 'MMMM d, yyyy')}</p>
+                    <p><strong>Transaction ID:</strong> {transaction.id}</p>
+                    <p><strong>Approved By:</strong> {transaction.approved_by}</p>
+                    <p><strong>Borrower Name:</strong> {transaction.borrower_name}</p>
+                    <p><strong>Item:</strong> {transaction.item}</p>
+                    <p><strong>Status:</strong> {transaction.status}</p>
+                    <p><strong>Release Mode:</strong> {transaction.release_mode}</p>
+                    <p><strong>Release State:</strong> {transaction.release_state}</p>
+                    <p><strong>Release Date:</strong> {format(new Date(transaction.release_date), 'MMMM d, yyyy')}</p>
+                    <p><strong>Return State:</strong> {transaction.return_state}</p>
+                    <p><strong>Return Date:</strong> {transaction.return_date ? format(new Date(transaction.return_date), 'MMMM d, yyyy') : 'Not returned yet'}</p>
                 </div>
-                <div className="mt-4">
-                    <Link href="/equipment/items" className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Back</Link>
-                    <Link href={`/equipment/equipment-edit/${equipment.id}`} className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Edit</Link>
+                <div className="mt-4 flex justify-end gap-2">
+                    <button onClick={onClose} className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                        Close
+                    </button>
+                    <Link href={`/transaction/transaction-edit/${transaction.id}`} className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                        Edit
+                    </Link>
                 </div>
             </div>
-        </AppLayout>
+        </div>
     );
 }
