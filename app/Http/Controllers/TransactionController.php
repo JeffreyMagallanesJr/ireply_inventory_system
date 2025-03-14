@@ -35,14 +35,17 @@ class TransactionController extends Controller
         ]);
     }
 
-    public function create(): Response
+    public function create()
     {
         return Inertia::render('transaction/transaction-form', [
-            'users' => User::select('id', 'first_name', 'last_name')->get(),
-            'employees' => Employee::select('id', 'first_name', 'last_name')->get(),
-            'equipments' => Equipment::select('id', 'item')->get(),
+            'users' => User::all(),
+            'employees' => Employee::all(),
+            'equipments' => Equipment::all(),
+            'statusEnum' => ['released', 'returned'],
+            'releaseModeEnum' => ['on_site', 'off_site'],
         ]);
     }
+
 
 
     public function store(Request $request)

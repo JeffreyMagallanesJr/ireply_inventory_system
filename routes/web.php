@@ -46,8 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // });
 
     // Transaction Routes
-    Route::resource('transaction', TransactionController::class);
-    //Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+    //Route::resource('transaction', TransactionController::class);
+    Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
     Route::get('/transaction/transaction-form', [TransactionController::class, 'create'])->name('transaction.create');
     Route::post('/transaction', [TransactionController::class, 'store'])->name('transaction.store');
     Route::get('/transaction/transaction-view/{id}', [TransactionController::class, 'show'])

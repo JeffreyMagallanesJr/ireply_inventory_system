@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { usePage, Head, router } from "@inertiajs/react";
 import AppLayout from "@/layouts/app-layout";
-import { Head, router } from "@inertiajs/react";
 import { type BreadcrumbItem } from "@/types";
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -9,6 +9,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function TransactionForm() {
+    const { users, employees, equipments, statusEnum, releaseModeEnum } = usePage().props as {
+        users: { id: number; name: string }[],
+        employees: { id: number; name: string }[],
+        equipments: { id: number; name: string }[],
+        statusEnum: string[],
+        releaseModeEnum: string[],
+    };
+
     const [formData, setFormData] = useState({
         user_id: "",
         employee_id: "",
@@ -55,6 +63,7 @@ export default function TransactionForm() {
             <div className="max-w-2xl mx-auto mt-6 p-6 bg-white dark:bg-gray-900 shadow-md rounded-lg">
                 <h2 className="text-2xl font-semibold mb-4">Add Transaction</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    
                     {/* Approver */}
                     <div>
                         <label className="block text-gray-700 dark:text-gray-300">Approved By</label>
