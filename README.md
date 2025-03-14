@@ -43,20 +43,44 @@ Go to phpmyadmin and create an empty database named 'eidb'.
 
 After that, run the following command to migrate database which automatically creates tables inside the eidb database and create a dev environment.
 
+For Windows:
+
 ```bash
 php artisan migrate
 npm install && npm run build
 npm install date-fns --save
+npm install react-toastify
+php artisan serve
+php artisan queue:listen --tries 1
+npm run dev
+```
+
+For Linux:
+
+```bash
+php artisan migrate
+npm install && npm run build
+npm install date-fns --save
+npm install react-toastify
 composer run dev
 ```
 
 ## Credits
+
 Czar Evan Gasper - Project Lead / Quality Assurance
+
+Aga Miguel Singayan - Quality Tester
 
 Aisha Japitana - Project Analyst / Quality Assurance
 
-Marlou Paduua - User Interface and User Experience Analyst
+Jessa Ville Laluyan - Project Analyst
 
 Kurt Jules Sicat - Fullstack Developer
+
+Brandon Belmonte - Backend Developer
+
+Kyle Ferick Nadate - Backend Developer
+
+Marlou Paduua - User Interface and User Experience Analyst
 
 Jeffrey Magallanes Jr - Software Lead
