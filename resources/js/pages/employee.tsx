@@ -5,7 +5,7 @@ import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { ChevronsUpDown , Trash2, Edit} from 'lucide-react';
+import { ChevronsUpDown , Trash2, Edit, Eye} from 'lucide-react';
 import EmployeeForm from './employee/employee-form';
 import EmployeeView from './employee/employee-view';
 import EmployeeEdit from './employee/employee-edit';
@@ -23,11 +23,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 interface Employee {
     id_number: string;
     first_name: string;
-    middle_name?: string;
     last_name: string;
+    email: string;
+    contact_number: string;
+    address: string;
     department: string;
     position: string;
-    date_hired: Date;
+    date_hired: string;
 }
 
 export default function Employee({ employees }: { employees: Employee[] }) {
@@ -43,8 +45,12 @@ export default function Employee({ employees }: { employees: Employee[] }) {
     const handleDelete = () => {
         if (selectedEmployee) {
             destroy(route("employee.destroy", selectedEmployee.id_number), {
-                onSuccess: () => toast.success("Employee deleted successfully!"),
-                onError: () => toast.error("Failed to delete employee."),
+                onSuccess: () => toast.error("Employee deleted successfully!", { 
+                    style: { backgroundColor: "#dc2626", color: "white" } // Explicit red background
+                }),
+                onError: () => toast.error("Failed to delete employee.", { 
+                    style: { backgroundColor: "#dc2626", color: "white" } 
+                }),
             });
         }
         setIsDeleteModalOpen(false);
@@ -83,7 +89,16 @@ export default function Employee({ employees }: { employees: Employee[] }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Employee" />
-            <ToastContainer />
+            <ToastContainer position="top-center"
+            autoClose={3000} 
+            hideProgressBar 
+            newestOnTop 
+            closeOnClick 
+            rtl={false} 
+            pauseOnFocusLoss 
+            draggable 
+            pauseOnHover 
+            theme="colored" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex justify-between mb-4">
                 <Dialog>
@@ -133,7 +148,7 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                                     <tr key={employee.id_number} className="border border-gray-300 dark:border-gray-700">
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{employee.id_number}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                            {employee.last_name}, {employee.first_name} {employee.middle_name || ''}
+                                            {employee.last_name}, {employee.first_name}
                                         </td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{employee.department}</td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">{employee.position}</td>
@@ -143,12 +158,13 @@ export default function Employee({ employees }: { employees: Employee[] }) {
                                             })}
                                         </td>
                                         <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                            <Link
-                                                href={`/employee/employee-view/${employee.id_number}`}
-                                                className="px-2 py-1 text-blue-500 hover:underline"
-                                            >
-                                                View
-                                            </Link>
+                                        <Dialog>
+                                            <DialogTrigger className="text-blue-500"><Eye className="w-5 h-5" /></DialogTrigger>
+                                            <DialogContent>
+                                                <DialogTitle>View</DialogTitle>
+                                                <EmployeeView employee={employee} />
+                                            </DialogContent>
+                                        </Dialog>
                                             <Dialog>
                                             <DialogTrigger className="text-green-500"><Edit className="w-5 h-5" /></DialogTrigger>
                                             <DialogContent>

@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import { useForm } from "@inertiajs/react";
 import { DialogClose } from "@/components/ui/dialog";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Employee {
     id_number: string;
     first_name: string;
     last_name: string;
     contact_number: string;
-    address: string,
-    email: string,
+    address: string;
+    email: string;
     department: string;
     position: string;
     date_hired: string;
@@ -28,9 +27,10 @@ export default function EmployeeEdit({ employee }: { employee: Employee }) {
         department: employee.department,
         position: employee.position,
         date_hired: employee.date_hired,
-    });
+            });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isUpdated, setIsUpdated] = useState(false); // Track update success
 
     useEffect(() => {
         if (employee) {
@@ -51,21 +51,22 @@ export default function EmployeeEdit({ employee }: { employee: Employee }) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-    
+
         put(route("employee.update", employee.id_number), {
             preserveScroll: true,
             onSuccess: () => {
                 toast.success("Employee updated successfully!", {
-                    position: "top-right",
-                    autoClose: 3000, // Hide after 3 seconds
-                    hideProgressBar: false,
+                    position: "top-center",
+                    autoClose: 3000,
+                    hideProgressBar: true,
                     closeOnClick: true,
                     pauseOnHover: true,
                     draggable: true,
                     progress: undefined,
-                    theme: "colored", // You can use "light", "dark", or "colored"
+                    theme: "colored",
                 });
                 setIsSubmitting(false);
+                setIsUpdated(true); // Set update success
             },
             onError: () => setIsSubmitting(false),
         });
@@ -169,13 +170,20 @@ export default function EmployeeEdit({ employee }: { employee: Employee }) {
                 <DialogClose className="px-4 py-2 bg-gray-400 text-white rounded">
                     Cancel
                 </DialogClose>
-                <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-500 text-white rounded"
-                    disabled={isSubmitting || processing}
-                >
-                    {isSubmitting ? "Updating..." : "Update Employee"}
-                </button>
+                
+                {isUpdated ? (
+                    <DialogClose className="px-4 py-2 bg-blue-500 text-white rounded">
+                        Close
+                    </DialogClose>
+                ) : (
+                    <button
+                        type="submit"
+                        className="px-4 py-2 bg-blue-500 text-white rounded"
+                        disabled={isSubmitting || processing}
+                    >
+                        {isSubmitting ? "Updating..." : "Update Employee"}
+                    </button>
+                )}
             </div>
         </form>
     );

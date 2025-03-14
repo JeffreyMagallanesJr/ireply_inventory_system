@@ -98,10 +98,13 @@ class EmployeeController extends Controller
         // Validate request
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
             'last_name' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'contact_number' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'department' => 'required|string|max:255',
             'position' => 'required|string|max:255',
+            'date_hired' => 'required|Date|max:255',
         ]);
 
         // Find employee by ID
