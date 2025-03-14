@@ -5,10 +5,10 @@ import { type BreadcrumbItem } from "@/types";
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: "Transactions", href: "/transaction" },
-    { title: "Add Transaction", href: "/transaction-form" },
+    { title: "Add Transaction", href: "/transaction/add" },
 ];
 
-export default function TransactionForm({ users, employees, equipments, statusEnum, releaseModeEnum, releaseStateEnum, returnStateEnum }) {
+export default function TransactionForm() {
     const [formData, setFormData] = useState({
         user_id: "",
         employee_id: "",

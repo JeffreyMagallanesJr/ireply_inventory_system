@@ -44,6 +44,7 @@ class TransactionController extends Controller
         ]);
     }
 
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -60,7 +61,7 @@ class TransactionController extends Controller
 
         Transaction::create($validated);
 
-        return redirect()->route('transaction')->with('success', 'Transaction added successfully!');
+        return redirect()->route('/transaction')->with('success', 'Transaction added successfully!');
     }
 
     public function show($id)
@@ -123,10 +124,10 @@ class TransactionController extends Controller
         $releaseStateEnum = $this->getEnumValues('transactions', 'release_state');
         $returnStateEnum = $this->getEnumValues('transactions', 'return_state');
 
-        \Log::info('Status Enum:', $statusEnum);
-        \Log::info('Release Mode Enum:', $releaseModeEnum);
-        \Log::info('Release State Enum:', $releaseStateEnum);
-        \Log::info('Return State Enum:', $returnStateEnum);
+        //\Log::info('Status Enum:', $statusEnum);
+        //\Log::info('Release Mode Enum:', $releaseModeEnum);
+        //\Log::info('Release State Enum:', $releaseStateEnum);
+        //\Log::info('Return State Enum:', $returnStateEnum);
 
         return Inertia::render('transaction/transaction-edit', [
             'transaction' => $transaction,
@@ -152,7 +153,7 @@ class TransactionController extends Controller
 
     
 
-    public function update(Request $request, $id)
+    /* public function update(Request $request, $id)
     {
         $transaction = Transaction::findOrFail($id);
 
@@ -179,5 +180,5 @@ class TransactionController extends Controller
         $transaction->delete();
 
         return redirect()->route('transaction')->with('success', 'Transaction deleted successfully');
-    }
+    } */
 }

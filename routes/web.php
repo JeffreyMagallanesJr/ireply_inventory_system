@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -52,10 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/transaction', [TransactionController::class, 'store'])->name('transaction.store');
     Route::get('/transaction/transaction-view/{id}', [TransactionController::class, 'show'])
     ->name('transaction.show');
-    Route::get('/transaction/transaction-edit/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');
-
-    
-    
+    Route::get('/transaction/transaction-edit/{id}', [TransactionController::class, 'edit'])->name('transaction.edit');    
 
 });
 
