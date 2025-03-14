@@ -37,12 +37,33 @@ class TransactionController extends Controller
 
     public function create()
     {
+        $users = User::select('id', 'first_name', 'last_name')->get();
+        $employees = Employee::select('id', 'first_name', 'last_name')->get();
+        $equipments = Equipment::select('id', 'item')->get();
+
+        // Fetch enum values
+        $statusEnum = $this->getEnumValues('transactions', 'status');
+        $releaseModeEnum = $this->getEnumValues('transactions', 'release_mode');
+        $releaseStateEnum = $this->getEnumValues('transactions', 'release_state');
+        $returnStateEnum = $this->getEnumValues('transactions', 'return_state');
+
         return Inertia::render('transaction/transaction-form', [
-            'users' => User::all(),
-            'employees' => Employee::all(),
-            'equipments' => Equipment::all(),
-            'statusEnum' => ['released', 'returned'],
-            'releaseModeEnum' => ['on_site', 'off_site'],
+            'users' => $users->map(fn($user) => [
+                'id' => $user->id,
+                'name' => "{$user->first_name} {$user->last_name}"
+            ]),
+            'employees' => $employees->map(fn($employee) => [
+                'id' => $employee->id,
+                'name' => "{$employee->first_name} {$employee->last_name}"
+            ]),
+            'equipments' => $equipments->map(fn($equipment) => [
+                'id' => $equipment->id,
+                'name' => $equipment->item
+            ]),
+            'statusEnum' => $statusEnum,
+            'releaseModeEnum' => $releaseModeEnum,
+            'releaseStateEnum' => $releaseStateEnum,
+            'returnStateEnum' => $returnStateEnum,
         ]);
     }
 
